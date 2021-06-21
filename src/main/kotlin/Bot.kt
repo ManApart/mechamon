@@ -1,4 +1,4 @@
-class Bot(var head: Head, var core: Core, var armRight: Arm, var armLeft: Arm) {
+class Bot(val ai: AI, var head: Head, var core: Core, var armRight: Arm, var armLeft: Arm) {
 
     fun getActions(): List<ActionChoice> {
         val choices = mutableListOf<ActionChoice>()

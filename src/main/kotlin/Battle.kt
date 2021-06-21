@@ -1,4 +1,6 @@
-class Battle(val botA: Bot, val botB: Bot) {
+class Battle(val botA: Bot, val botB: Bot, val terrain: Terrain) {
+    var distance = 10
+
     fun getOpponent(bot: Bot) : Bot {
         return if (bot == botA) botB else botA
     }
@@ -12,6 +14,7 @@ class Battle(val botA: Bot, val botB: Bot) {
     }
 
     fun tick(){
-
+        botA.ai.takeTurn(this)
+        botB.ai.takeTurn(this)
     }
 }
