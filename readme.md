@@ -1,5 +1,10 @@
 # Automon
 
+## Running
+
+Run with gradlew task `runJvm`
+
+
 ## Thoughts
 
 add range to parts
