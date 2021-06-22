@@ -3,6 +3,7 @@ import com.soywiz.klock.seconds
 import com.soywiz.kmem.clamp
 import com.soywiz.korev.Key
 import com.soywiz.korge.*
+import com.soywiz.korge.input.onClick
 import com.soywiz.korge.tiled.readTiledMap
 import com.soywiz.korge.tiled.tiledMapView
 import com.soywiz.korge.tween.*
@@ -16,40 +17,23 @@ import kotlin.math.pow
 
 suspend fun main() = Korge(width = 512, height = 512, bgcolor = Colors["#2b2b2b"]) {
 
-//	val minDegrees = (-16).degrees
-//	val maxDegrees = (+16).degrees
-//
-//	val image = image(resourcesVfs["korge.png"].readBitmap()) {
-//		rotation = maxDegrees
-//		anchor(.5, .5)
-//		scale(.8)
-//		position(256, 256)
-//	}
-//
-//	while (true) {
-//		image.tween(image::rotation[minDegrees], time = 1.seconds, easing = Easing.EASE_IN_OUT)
-//		image.tween(image::rotation[maxDegrees], time = 1.seconds, easing = Easing.EASE_IN_OUT)
-//	}
-
 	val tiledMap = resourcesVfs["map.tmx"].readTiledMap()
 	fixedSizeContainer(256, 256, clip = true) {
 		position(128, 128)
 		val camera = camera {
 			tiledMapView(tiledMap) {
+				onClick {
+					val x = (it.currentPosLocal.x / 16).toInt()
+					val y = (it.currentPosLocal.y / 16).toInt()
+					val tileId = tiledMap.tileLayers.first()[x, y]-1
+					val tileData = tiledMap.tilesets.first().data.tiles.first { tileData ->  tileData.id == tileId }
+					val terrain = tileData.properties["terrain"]
+					println("Clicked Tile $x, $y, $tileId: $terrain")
+				}
 			}
 		}
 		var dx = 0.0
 		var dy = 0.0
-		//this.keys.apply {
-		//	down { key ->
-		//		when (key) {
-		//			Key.RIGHT -> dx -= 1.0
-		//			Key.LEFT -> dx += 1.0
-		//			Key.DOWN -> dy -= 1.0
-		//			Key.UP -> dy += 1.0
-		//		}
-		//	}
-		//}
 		addUpdater {
 			//val scale = 1.0 / (it / 16.666666.hrMilliseconds)
 			val scale = if (it == 0.0.milliseconds) 0.0 else (it / 16.666666.milliseconds)
