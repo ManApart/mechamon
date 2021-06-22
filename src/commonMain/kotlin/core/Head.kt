@@ -1,4 +1,6 @@
-import actions.Action
+package core
+
+import core.actions.Action
 
 class Head(
     override val name: String,
@@ -6,7 +8,7 @@ class Head(
     override val totalHealth: Int,
     val totalAP: Int,
     val actions: List<Action> = listOf()
-) : Part{
+) : Part {
     override var health: Int = totalHealth
     var ap = totalAP
 }

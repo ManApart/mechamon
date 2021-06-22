@@ -1,8 +1,8 @@
-package actions
+package core.actions
 
-import Battle
-import Bot
-import Part
+import core.Battle
+import core.Bot
+import core.Part
 
 abstract class Action(val name: String, val cost: Int) {
 

@@ -1,3 +1,5 @@
+package core
+
 //Each movement is 0-10
 class Terrain(
     val name: String,

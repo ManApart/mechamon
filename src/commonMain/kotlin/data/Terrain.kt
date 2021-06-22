@@ -1,6 +1,6 @@
 package data
 
-import Terrain
+import core.Terrain
 
 val terrain = listOf(
     Terrain("Grassland", "A park of green and well kept paths.", flat = 8, water = 2),

@@ -1,6 +1,6 @@
 package data
 
-import actions.SimpleAttack
+import core.actions.SimpleAttack
 
 val actions = listOf(
     SimpleAttack("Jab", 1, 1),

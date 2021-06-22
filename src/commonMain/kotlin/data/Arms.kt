@@ -1,6 +1,6 @@
 package data
 
-import Arm
+import core.Arm
 
 val arms = listOf(
     Arm("Standard", "Lightweight and balanced. Delivers a quick jab.", 3, true, listOf(actions["Jab"]!!)),

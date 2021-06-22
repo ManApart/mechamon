@@ -1,4 +1,6 @@
-import actions.Action
+package core
+
+import core.actions.Action
 
 class Arm(
     override val name: String,
@@ -6,6 +8,6 @@ class Arm(
     override val totalHealth: Int,
     val isRightArm: Boolean = true,
     val actions: List<Action> = listOf()
-) : Part{
+) : Part {
     override var health: Int = totalHealth
 }

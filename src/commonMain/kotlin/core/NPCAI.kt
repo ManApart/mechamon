@@ -1,3 +1,5 @@
+package core
+
 class NPCAI(override val parent: Bot) : AI {
     override fun takeTurn(battle: Battle) {
         val move = parent.core.getMovement(battle.terrain)

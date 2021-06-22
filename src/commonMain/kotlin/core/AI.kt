@@ -1,3 +1,5 @@
+package core
+
 interface AI {
     val parent: Bot
 

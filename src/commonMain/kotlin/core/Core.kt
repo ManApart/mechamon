@@ -1,4 +1,6 @@
-import actions.Action
+package core
+
+import core.actions.Action
 import kotlin.math.min
 import kotlin.math.max
 

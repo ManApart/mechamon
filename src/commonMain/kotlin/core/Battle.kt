@@ -1,3 +1,5 @@
+package core
+
 class Battle(val botA: Bot, val botB: Bot, val terrain: Terrain) {
     var distance = 10
 

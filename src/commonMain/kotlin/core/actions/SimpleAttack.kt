@@ -1,8 +1,8 @@
-package actions
+package core.actions
 
-import Battle
-import Bot
-import Part
+import core.Battle
+import core.Bot
+import core.Part
 import kotlin.math.max
 
 class SimpleAttack(name: String, cost: Int, val damage: Int) : Action(name, cost) {
