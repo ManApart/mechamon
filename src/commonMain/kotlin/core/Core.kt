@@ -1,6 +1,7 @@
 package core
 
 import core.actions.Action
+import data.NOTHING
 import kotlin.math.min
 import kotlin.math.max
 
@@ -15,7 +16,7 @@ class Core(
     val moveTightQuarters: Int,
     val moveWater: Int,
     val moveSky: Int,
-    val actions: List<Action> = listOf()
+    override val action: Action = NOTHING
 ) : Part {
     override var health: Int = totalHealth
 

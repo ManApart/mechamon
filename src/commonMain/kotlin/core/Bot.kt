@@ -1,5 +1,6 @@
 package core
 
+import data.NOTHING
 import data.arms
 import data.cores
 import data.heads
@@ -12,21 +13,14 @@ class Bot(
 ) {
 
     fun getActions(): List<ActionChoice> {
-        val choices = mutableListOf<ActionChoice>()
         val ap = head.totalAP
 
-        choices.addAll(head.actions.map { ActionChoice(it, ap) })
-        if (core.health > 0) {
-            choices.addAll(core.actions.map { ActionChoice(it, ap) })
-        }
-        if (armLeft.health > 0) {
-            choices.addAll(armLeft.actions.map { ActionChoice(it, ap) })
-        }
-        if (armRight.health > 0) {
-            choices.addAll(armRight.actions.map { ActionChoice(it, ap) })
-        }
-
-        return choices
+        return listOf(head, core, armLeft, armRight)
+            .filter { it.health > 0 }
+            .filter { it.action != NOTHING }
+            .map { ActionChoice(it.action, ap) }
+            .toMutableList()
+            .also { it.add(ActionChoice(NOTHING, true)) }
     }
 
 }
