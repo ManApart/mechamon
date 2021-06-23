@@ -15,8 +15,8 @@ class Battle(val botA: Bot, val botB: Bot, val terrain: Terrain) {
         }
     }
 
-    fun tick(){
-        botA.ai.takeTurn(this)
-        botB.ai.takeTurn(this)
-    }
+//    fun tick(){
+//        botA.ai.takeTurn(this)
+//        botB.ai.takeTurn(this)
+//    }
 }

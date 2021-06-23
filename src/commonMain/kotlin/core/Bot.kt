@@ -1,6 +1,15 @@
 package core
 
-class Bot(val ai: AI, var head: Head, var core: Core, var armRight: Arm, var armLeft: Arm) {
+import data.arms
+import data.cores
+import data.heads
+
+class Bot(
+    var head: Head = heads["Standard"]!!,
+    var core: Core = cores["Standard"]!!,
+    var armRight: Arm = arms["StandardRight"]!!,
+    var armLeft: Arm = arms["StandardLeft"]!!
+) {
 
     fun getActions(): List<ActionChoice> {
         val choices = mutableListOf<ActionChoice>()
