@@ -3,17 +3,17 @@
  <image source="Tileset.png" width="1024" height="1024"/>
  <tile id="0">
   <properties>
-   <property name="terrain" value="grass"/>
+   <property name="terrain" value="Grass"/>
   </properties>
  </tile>
  <tile id="1">
   <properties>
-   <property name="terrain" value="sand"/>
+   <property name="terrain" value="Sand"/>
   </properties>
  </tile>
  <tile id="129">
   <properties>
-   <property name="terrain" value="bush"/>
+   <property name="terrain" value="Bush"/>
   </properties>
  </tile>
 </tileset>

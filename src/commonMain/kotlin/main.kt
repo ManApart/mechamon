@@ -1,23 +1,24 @@
 import com.soywiz.klock.milliseconds
-import com.soywiz.klock.seconds
 import com.soywiz.kmem.clamp
 import com.soywiz.korev.Key
-import com.soywiz.korge.*
+import com.soywiz.korge.Korge
 import com.soywiz.korge.input.onClick
 import com.soywiz.korge.tiled.readTiledMap
 import com.soywiz.korge.tiled.tiledMapView
-import com.soywiz.korge.tween.*
-import com.soywiz.korge.view.*
+import com.soywiz.korge.view.addUpdater
+import com.soywiz.korge.view.camera
+import com.soywiz.korge.view.fixedSizeContainer
+import com.soywiz.korge.view.position
 import com.soywiz.korim.color.Colors
-import com.soywiz.korim.format.*
-import com.soywiz.korio.file.std.*
-import com.soywiz.korma.geom.degrees
-import com.soywiz.korma.interpolation.Easing
+import com.soywiz.korio.file.std.resourcesVfs
+import ui.parseTerrain
 import kotlin.math.pow
 
 suspend fun main() = Korge(width = 512, height = 512, bgcolor = Colors["#2b2b2b"]) {
 
 	val tiledMap = resourcesVfs["map.tmx"].readTiledMap()
+	Game.terrain = parseTerrain(tiledMap)
+
 	fixedSizeContainer(256, 256, clip = true) {
 		position(128, 128)
 		val camera = camera {
@@ -25,10 +26,8 @@ suspend fun main() = Korge(width = 512, height = 512, bgcolor = Colors["#2b2b2b"
 				onClick {
 					val x = (it.currentPosLocal.x / 16).toInt()
 					val y = (it.currentPosLocal.y / 16).toInt()
-					val tileId = tiledMap.tileLayers.first()[x, y]-1
-					val tileData = tiledMap.tilesets.first().data.tiles.first { tileData ->  tileData.id == tileId }
-					val terrain = tileData.properties["terrain"]
-					println("Clicked Tile $x, $y, $tileId: $terrain")
+					val tile = Game.terrain.get(x, y)
+					println("Clicked Tile: $tile")
 				}
 			}
 		}
