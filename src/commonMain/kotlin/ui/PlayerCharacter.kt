@@ -26,13 +26,34 @@ class PlayerCharacter(val bot: Bot) : Container() {
             spriteWidth = 16,
             spriteHeight = 20,
         )
-        val walking = SpriteAnimation(
+        val walkDown = SpriteAnimation(
             spriteMap = image,
             spriteWidth = 16,
             spriteHeight = 20,
             columns = 4
         )
-        val sprite = sprite(standing)
+        val walkUp = SpriteAnimation(
+            spriteMap = image,
+            spriteWidth = 16,
+            spriteHeight = 20,
+            columns = 4,
+            marginTop = 20
+        )
+        val walkLeft = SpriteAnimation(
+            spriteMap = image,
+            spriteWidth = 16,
+            spriteHeight = 20,
+            columns = 4,
+            marginTop = 40
+        )
+        val walkRight = SpriteAnimation(
+            spriteMap = image,
+            spriteWidth = 16,
+            spriteHeight = 20,
+            columns = 4,
+            marginTop = 60
+        )
+        val sprite = sprite(walkUp)
         sprite.xy(0, 0)
 
         sprite.playAnimationLooped(spriteDisplayTime = TimeSpan(200.0))
