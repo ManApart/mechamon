@@ -5,10 +5,10 @@ import TILE_SIZE
 import com.soywiz.klock.TimeSpan
 import com.soywiz.korev.Key
 import com.soywiz.korge.input.keys
-import com.soywiz.korge.input.onKeyDown
 import com.soywiz.korge.view.*
 import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.file.std.resourcesVfs
+import com.soywiz.korma.geom.Point
 import core.Bot
 
 class PlayerCharacter(val bot: Bot) : Container() {
@@ -44,21 +44,46 @@ class PlayerCharacter(val bot: Bot) : Container() {
     private suspend fun setupControls() {
         val velocity = 1.0
         keys {
-            down(Key.RIGHT) { sprite.x += velocity }
-            down(Key.LEFT) { sprite.x -= velocity }
-            down(Key.UP) { sprite.y -= velocity }
-            down(Key.DOWN) { sprite.y += velocity }
+            down(Key.RIGHT) { tryMove(velocity) }
+            down(Key.LEFT) { tryMove(-velocity) }
+            down(Key.UP) { tryMove(yd = -velocity) }
+            down(Key.DOWN) { tryMove(yd = velocity) }
             up(Key.SPACE) { getTerrainUnderMe() }
         }
     }
 
+    private fun tryMove(xd: Double = 0.0, yd: Double = 0.0) {
+        val source = getSpriteAnchor()
+        val right = getTile(source + Point(xd, 0.0))
+        val down = getTile(source + Point(0.0, yd))
+        val both = getTile(source + Point(xd, yd))
+        when {
+            bot.core.getMovement(both.type.terrain) > 0 -> {
+                sprite.x += xd
+                sprite.y += yd
+            }
+            bot.core.getMovement(right.type.terrain) > 0 -> sprite.x += xd
+            bot.core.getMovement(down.type.terrain) > 0 -> sprite.y += yd
+            else -> Unit
+        }
+    }
+
     private fun getTerrainUnderMe() {
-        println("Terrain under me")
+        val tile = getTile(getSpriteAnchor())
+        println("Terrain under me: $tile")
+    }
+
+    private fun getSpriteAnchor(): Point {
+        val x = sprite.x + sprite.width / 2
+        val y = sprite.y + sprite.height
+        return Point(x, y)
+    }
+
+    private fun getTile(source: Point): Tile {
         val scale = TILE_SIZE * MAP_RENDER_SCALE
-        val x = (sprite.x / scale).toInt()
-        val y = (sprite.y / scale).toInt()
-        val tile = Game.terrain.get(x, y)
-        println("Clicked Tile: $tile")
+        val x = (source.x / scale).toInt()
+        val y = (source.y / scale).toInt()
+        return Game.terrain.get(x, y)
     }
 
 }
