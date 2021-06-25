@@ -1,6 +1,5 @@
 package ui
 
-import MAP_RENDER_SCALE
 import TILE_SIZE
 import com.soywiz.klock.TimeSpan
 import com.soywiz.klock.milliseconds
@@ -25,6 +24,7 @@ class PlayerCharacter(private val bot: Bot) : Container() {
     private suspend fun buildSprite() {
         val image = resourcesVfs["character.png"].readBitmap()
         this.sprite = sprite()
+        this.sprite.smoothing = false
         this.animator = PlayerAnimator(image, sprite)
         sprite.xy(0, 0)
 
@@ -52,7 +52,7 @@ class PlayerCharacter(private val bot: Bot) : Container() {
 
     private fun tryMove(xd: Double = 0.0, yd: Double = 0.0) {
         val source = getSpriteAnchor()
-        if (source.x + xd < sprite.width / 2 || source.y + yd < sprite.height) {
+        if (source.x + xd < sprite.width / 2 || source.y + yd < sprite.height/2) {
             return
         }
 
@@ -91,9 +91,8 @@ class PlayerCharacter(private val bot: Bot) : Container() {
     }
 
     private fun getTile(source: Point): Tile? {
-        val scale = TILE_SIZE * MAP_RENDER_SCALE
-        val x = (source.x / scale).toInt()
-        val y = (source.y / scale).toInt()
+        val x = (source.x / TILE_SIZE).toInt()
+        val y = (source.y / TILE_SIZE).toInt()
         return Game.terrain.get(x, y)
     }
 
