@@ -22,17 +22,22 @@ class PlayerCharacter(private val bot: Bot) : Container() {
         setupControls()
     }
 
-    private suspend fun buildSprite(){
+    private suspend fun buildSprite() {
         val image = resourcesVfs["character.png"].readBitmap()
         this.sprite = sprite()
         this.animator = PlayerAnimator(image, sprite)
         sprite.xy(0, 0)
 
-        animator.evaluate(facing, facing, false)
+        animator.evaluate(facing, false)
     }
 
 
     private fun setupControls() {
+        keys {
+            up(Key.SPACE) {
+                printTile()
+            }
+        }
         addUpdaterWithViews { views: Views, dt: TimeSpan ->
             var dx = 0.0
             var dy = 0.0
@@ -47,38 +52,36 @@ class PlayerCharacter(private val bot: Bot) : Container() {
 
     private fun tryMove(xd: Double = 0.0, yd: Double = 0.0) {
         val source = getSpriteAnchor()
-        if (source.x + xd < 0 || source.y + yd < 0) {
+        if (source.x + xd < sprite.width / 2 || source.y + yd < sprite.height) {
             return
         }
-        val right = getTile(source + Point(xd, 0.0))
-        val down = getTile(source + Point(0.0, yd))
-        val both = getTile(source + Point(xd, yd))
-        val moveBoth = xd != 0.0 && yd != 0.0 && both != null && bot.core.getMovement(both.type.terrain) > 0
-        val moveRight = xd != 0.0 && right != null && bot.core.getMovement(right.type.terrain) > 0
-        val moveDown = yd != 0.0 && down != null && bot.core.getMovement(down.type.terrain) > 0
-        val wasFacing = facing
 
         when {
-            moveBoth -> {
+            xd != 0.0 && yd != 0.0 && canMove(source, xd, yd) -> {
                 sprite.x += xd
                 sprite.y += yd
                 facing = fromDelta(xd, yd)
-                animator.evaluate(facing, wasFacing)
+                animator.evaluate(facing)
             }
-            moveRight ->{
+            xd != 0.0 && canMove(source, xd, 0.0) -> {
                 sprite.x += xd
                 facing = fromDelta(xd, 0.0)
-                animator.evaluate(facing, wasFacing)
+                animator.evaluate(facing)
             }
-            moveDown -> {
+            yd != 0.0 && canMove(source, 0.0, yd) -> {
                 sprite.y += yd
                 facing = fromDelta(0.0, yd)
-                animator.evaluate(facing, wasFacing)
+                animator.evaluate(facing)
             }
             else -> {
-                animator.evaluate(facing, facing, false)
+                animator.evaluate(facing, false)
             }
         }
+    }
+
+    private fun canMove(source: Point, xd: Double, yd: Double): Boolean {
+        val tile = getTile(source + Point(xd, yd))
+        return tile != null && bot.core.getMovement(tile.type.terrain) > 0
     }
 
     private fun getSpriteAnchor(): Point {
@@ -92,6 +95,11 @@ class PlayerCharacter(private val bot: Bot) : Container() {
         val x = (source.x / scale).toInt()
         val y = (source.y / scale).toInt()
         return Game.terrain.get(x, y)
+    }
+
+    private fun printTile(){
+        val tile = getTile(getSpriteAnchor())
+        println("Standing on $tile")
     }
 
 }
