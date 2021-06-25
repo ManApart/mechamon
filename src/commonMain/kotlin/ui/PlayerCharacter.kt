@@ -12,54 +12,23 @@ import com.soywiz.korio.file.std.resourcesVfs
 import com.soywiz.korma.geom.Point
 import core.Bot
 
-class PlayerCharacter(val bot: Bot) : Container() {
+class PlayerCharacter(private val bot: Bot) : Container() {
     private lateinit var sprite: Sprite
+    private lateinit var animator: PlayerAnimator
+    private var facing = Direction.DOWN
 
     suspend fun init() {
-        this.sprite = buildSprite()
+        buildSprite()
         setupControls()
     }
 
-    private suspend fun buildSprite(): Sprite {
+    private suspend fun buildSprite(){
         val image = resourcesVfs["character.png"].readBitmap()
-        val standing = SpriteAnimation(
-            spriteMap = image,
-            spriteWidth = 16,
-            spriteHeight = 20,
-        )
-        val walkDown = SpriteAnimation(
-            spriteMap = image,
-            spriteWidth = 16,
-            spriteHeight = 20,
-            columns = 4
-        )
-        val walkUp = SpriteAnimation(
-            spriteMap = image,
-            spriteWidth = 16,
-            spriteHeight = 20,
-            columns = 4,
-            marginTop = 20
-        )
-        val walkLeft = SpriteAnimation(
-            spriteMap = image,
-            spriteWidth = 16,
-            spriteHeight = 20,
-            columns = 4,
-            marginTop = 40
-        )
-        val walkRight = SpriteAnimation(
-            spriteMap = image,
-            spriteWidth = 16,
-            spriteHeight = 20,
-            columns = 4,
-            marginTop = 60
-        )
-        val sprite = sprite(walkUp)
+        this.sprite = sprite()
+        this.animator = PlayerAnimator(image, sprite)
         sprite.xy(0, 0)
 
-        sprite.playAnimationLooped(spriteDisplayTime = TimeSpan(200.0))
-
-        return sprite
+        animator.evaluate(facing, facing, false)
     }
 
 
@@ -84,23 +53,32 @@ class PlayerCharacter(val bot: Bot) : Container() {
         val right = getTile(source + Point(xd, 0.0))
         val down = getTile(source + Point(0.0, yd))
         val both = getTile(source + Point(xd, yd))
-        val moveBoth = both != null && bot.core.getMovement(both.type.terrain) > 0
-        val moveRight = right != null && bot.core.getMovement(right.type.terrain) > 0
-        val moveDown = down != null && bot.core.getMovement(down.type.terrain) > 0
+        val moveBoth = xd != 0.0 && yd != 0.0 && both != null && bot.core.getMovement(both.type.terrain) > 0
+        val moveRight = xd != 0.0 && right != null && bot.core.getMovement(right.type.terrain) > 0
+        val moveDown = yd != 0.0 && down != null && bot.core.getMovement(down.type.terrain) > 0
+        val wasFacing = facing
+
         when {
             moveBoth -> {
                 sprite.x += xd
                 sprite.y += yd
+                facing = fromDelta(xd, yd)
+                animator.evaluate(facing, wasFacing)
             }
-            moveRight -> sprite.x += xd
-            moveDown -> sprite.y += yd
-            else -> Unit
+            moveRight ->{
+                sprite.x += xd
+                facing = fromDelta(xd, 0.0)
+                animator.evaluate(facing, wasFacing)
+            }
+            moveDown -> {
+                sprite.y += yd
+                facing = fromDelta(0.0, yd)
+                animator.evaluate(facing, wasFacing)
+            }
+            else -> {
+                animator.evaluate(facing, facing, false)
+            }
         }
-    }
-
-    private fun getTerrainUnderMe() {
-        val tile = getTile(getSpriteAnchor())
-        println("Terrain under me: $tile")
     }
 
     private fun getSpriteAnchor(): Point {
