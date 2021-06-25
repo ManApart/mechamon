@@ -1,7 +1,5 @@
 package ui
 
-import com.soywiz.korma.geom.Point
-
 class TileMap(tiles: List<Tile>) {
     private val map: Map<Int, Map<Int, Tile>> = createTileMap(tiles)
 
@@ -14,11 +12,8 @@ class TileMap(tiles: List<Tile>) {
         return map
     }
 
-//    fun get(point: Point): Tile {
-//        return get(point.x.toInt(), point.y.toInt())
-//    }
-    fun get(x: Int, y: Int): Tile {
-        return map[x]!![y]!!
+    fun get(x: Int, y: Int): Tile? {
+        return map[x]?.get(y)
     }
 
 }
