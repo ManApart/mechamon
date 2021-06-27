@@ -8,6 +8,7 @@ import com.soywiz.korge.view.scaleView
 import com.soywiz.korim.color.Colors
 import com.soywiz.korio.file.std.resourcesVfs
 import ui.PlayerCharacter
+import ui.parseDoors
 import ui.parseTerrain
 
 const val TILE_SIZE = 16
@@ -16,6 +17,7 @@ suspend fun main() = Korge(width = 1024, height = 800, bgcolor = Colors["#2b2b2b
 
     val tiledMap = resourcesVfs["map.tmx"].readTiledMap()
     Game.terrain = parseTerrain(tiledMap)
+    parseDoors(tiledMap, Game.terrain)
 
     val player = PlayerCharacter(Game.playerBot)
 
