@@ -6,11 +6,13 @@ import com.soywiz.korge.tiled.TiledMap
 fun parseTerrain(tiledMap: TiledMap): TileMap {
     val tileLayer = tiledMap.tileLayers.first()
     val tileTypes = getTileTypes(tiledMap)
+    val doors = parseDoors(tiledMap)
     val tiles = (0 until tileLayer.width).flatMap { x ->
         (0 until tileLayer.height).map { y ->
             val tileId = tileLayer[x, y] - 1
-//            val door = parseDoor(x, y, tiledMap)
-            Tile(x, y, tileTypes[tileId]!!)
+            val door = doors[x]?.get(y)
+            val type = tileTypes[tileId] ?: throw IllegalArgumentException("Tile at ($x,$y) needs terrain tilesheet data!")
+            Tile(x, y, type, door)
         }
     }
     return TileMap(tiles)
@@ -24,15 +26,8 @@ private fun getTileTypes(tiledMap: TiledMap): Map<Int, TileType> {
     }.associateBy { it.id }
 }
 
-//private fun parseDoor(x: Int, y: Int, tiledMap: TiledMap): Door? {
-//    if (tiledMap.objectLayers.isNotEmpty()) {
-//        val layer = tiledMap.objectLayers.first()
-//        layer.
-//    }
-//    return null
-//}
-
-fun parseDoors(tiledMap: TiledMap, terrain: TileMap) {
+private fun parseDoors(tiledMap: TiledMap) : Map<Int, Map<Int, Door>>{
+    val doorMap = mutableMapOf<Int, MutableMap<Int, Door>>()
     if (tiledMap.objectLayers.isNotEmpty()) {
         tiledMap.objectLayers.first().objects.forEach { candidated ->
             val props = candidated.properties
@@ -40,10 +35,9 @@ fun parseDoors(tiledMap: TiledMap, terrain: TileMap) {
                 val door = Door(props["level"]!!.string, props["x"]!!.string.toInt(), props["y"]!!.string.toInt())
                 val x = (candidated.bounds.position.x /TILE_SIZE).toInt()
                 val y = (candidated.bounds.position.y /TILE_SIZE).toInt()
-                terrain.get(x,y)!!.door = door
+                doorMap.getOrPut(x) { mutableMapOf() }[y] = door
             }
-
         }
-
     }
+    return doorMap
 }

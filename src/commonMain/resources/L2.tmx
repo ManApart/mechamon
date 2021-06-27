@@ -19,8 +19,8 @@
   <object id="1" x="88.8682" y="152.026">
    <properties>
     <property name="level" value="main"/>
-    <property name="x" type="int" value="2"/>
-    <property name="y" type="int" value="0"/>
+    <property name="x" type="int" value="8"/>
+    <property name="y" type="int" value="1"/>
    </properties>
   </object>
  </objectgroup>

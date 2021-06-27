@@ -55,6 +55,7 @@ class PlayerCharacter(private val bot: Bot) : Container() {
         if (source.x + xd < sprite.width / 2 || source.y + yd < sprite.height/2) {
             return
         }
+        val sourceTile = getTile(source)
 
         when {
             xd != 0.0 && yd != 0.0 && canMove(source, xd, yd) -> {
@@ -62,16 +63,19 @@ class PlayerCharacter(private val bot: Bot) : Container() {
                 sprite.y += yd
                 facing = fromDelta(xd, yd)
                 animator.evaluate(facing)
+                tileChanged(sprite.x, sprite.y, sourceTile)
             }
             xd != 0.0 && canMove(source, xd, 0.0) -> {
                 sprite.x += xd
                 facing = fromDelta(xd, 0.0)
                 animator.evaluate(facing)
+                tileChanged(sprite.x, sprite.y, sourceTile)
             }
             yd != 0.0 && canMove(source, 0.0, yd) -> {
                 sprite.y += yd
                 facing = fromDelta(0.0, yd)
                 animator.evaluate(facing)
+                tileChanged(sprite.x, sprite.y, sourceTile)
             }
             else -> {
                 animator.evaluate(facing, false)
@@ -99,6 +103,20 @@ class PlayerCharacter(private val bot: Bot) : Container() {
     private fun printTile(){
         val tile = getTile(getSpriteAnchor())
         println("Standing on $tile")
+    }
+
+    private fun tileChanged(x: Double, y: Double, oldTile: Tile?) {
+        val newTile = getTile(Point(x, y))
+        if (newTile != null && newTile != oldTile){
+            if (newTile.door != null){
+                Game.useDoor(this, newTile.door)
+            }
+        }
+    }
+
+    fun setTile(playerStartTile: Point){
+        sprite.x = playerStartTile.x * TILE_SIZE
+        sprite.y = playerStartTile.y * TILE_SIZE
     }
 
 }

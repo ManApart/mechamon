@@ -56,4 +56,14 @@
    <property name="terrain" value="Boulder"/>
   </properties>
  </tile>
+ <tile id="1024">
+  <properties>
+   <property name="terrain" value="Dirt"/>
+  </properties>
+ </tile>
+ <tile id="1025">
+  <properties>
+   <property name="terrain" value="Boulder"/>
+  </properties>
+ </tile>
 </tileset>
