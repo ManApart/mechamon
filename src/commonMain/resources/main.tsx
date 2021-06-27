@@ -31,6 +31,11 @@
    <property name="terrain" value="Bush"/>
   </properties>
  </tile>
+ <tile id="132">
+  <properties>
+   <property name="terrain" value="Bush"/>
+  </properties>
+ </tile>
  <tile id="135">
   <properties>
    <property name="terrain" value="Wall"/>

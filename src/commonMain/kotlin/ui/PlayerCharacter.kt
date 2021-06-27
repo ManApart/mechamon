@@ -55,7 +55,7 @@ class PlayerCharacter(private val bot: Bot) : Container() {
         if (source.x + xd < sprite.width / 2 || source.y + yd < sprite.height/2) {
             return
         }
-        val sourceTile = getTile(source)
+        val oldTile = getTile(source)
 
         when {
             xd != 0.0 && yd != 0.0 && canMove(source, xd, yd) -> {
@@ -63,19 +63,19 @@ class PlayerCharacter(private val bot: Bot) : Container() {
                 sprite.y += yd
                 facing = fromDelta(xd, yd)
                 animator.evaluate(facing)
-                tileChanged(sprite.x, sprite.y, sourceTile)
+                tileChanged(oldTile)
             }
             xd != 0.0 && canMove(source, xd, 0.0) -> {
                 sprite.x += xd
                 facing = fromDelta(xd, 0.0)
                 animator.evaluate(facing)
-                tileChanged(sprite.x, sprite.y, sourceTile)
+                tileChanged(oldTile)
             }
             yd != 0.0 && canMove(source, 0.0, yd) -> {
                 sprite.y += yd
                 facing = fromDelta(0.0, yd)
                 animator.evaluate(facing)
-                tileChanged(sprite.x, sprite.y, sourceTile)
+                tileChanged(oldTile)
             }
             else -> {
                 animator.evaluate(facing, false)
@@ -105,8 +105,8 @@ class PlayerCharacter(private val bot: Bot) : Container() {
         println("Standing on $tile")
     }
 
-    private fun tileChanged(x: Double, y: Double, oldTile: Tile?) {
-        val newTile = getTile(Point(x, y))
+    private fun tileChanged(oldTile: Tile?) {
+        val newTile = getTile(getSpriteAnchor())
         if (newTile != null && newTile != oldTile){
             if (newTile.door != null){
                 Game.useDoor(this, newTile.door)
@@ -116,7 +116,7 @@ class PlayerCharacter(private val bot: Bot) : Container() {
 
     fun setTile(playerStartTile: Point){
         sprite.x = playerStartTile.x * TILE_SIZE
-        sprite.y = playerStartTile.y * TILE_SIZE
+        sprite.y = playerStartTile.y * TILE_SIZE - (TILE_SIZE/2)
     }
 
 }

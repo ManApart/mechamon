@@ -39,9 +39,8 @@ suspend fun Stage.loadLevel(
     Game.terrain = parseTerrain(tiledMap)
     removeChildren()
 
-    fixedSizeContainer(1024, 800, clip = false) {
-        position(10, 10)
-        scaleView(1024, 800, 2.0, false) {
+    fixedSizeContainer(WINDOW_SIZE, WINDOW_SIZE, clip = false) {
+        scaleView(WINDOW_SIZE, WINDOW_SIZE, 2.0, false) {
             tiledMapView(tiledMap, smoothing = false)
             addChild(player)
             player.setTile(playerStartTile)
