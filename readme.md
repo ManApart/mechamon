@@ -1,4 +1,4 @@
-# Automon
+# Mechamon
 
 ## Running
 

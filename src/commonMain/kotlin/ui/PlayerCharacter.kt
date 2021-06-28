@@ -37,6 +37,9 @@ class PlayerCharacter(private val bot: Bot) : Container() {
             up(Key.SPACE) {
                 printTile()
             }
+            up(Key.Z) {
+                Game.startBattle(Bot(), getTile(getSpriteAnchor())!!.type.terrain)
+            }
         }
         addUpdaterWithViews { views: Views, dt: TimeSpan ->
             var dx = 0.0

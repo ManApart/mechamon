@@ -71,4 +71,21 @@
    <property name="terrain" value="Boulder"/>
   </properties>
  </tile>
+ <wangsets>
+  <wangset name="Unnamed Set" type="corner" tile="-1">
+   <wangcolor name="sand" color="#ff0000" tile="-1" probability="1"/>
+   <wangcolor name="grass" color="#00ff00" tile="-1" probability="1"/>
+   <wangtile tileid="0" wangid="0,2,0,2,0,2,0,2"/>
+   <wangtile tileid="1" wangid="0,1,0,1,0,1,0,1"/>
+   <wangtile tileid="588" wangid="0,2,0,1,0,2,0,2"/>
+   <wangtile tileid="589" wangid="0,2,0,1,0,1,0,2"/>
+   <wangtile tileid="590" wangid="0,2,0,2,0,1,0,2"/>
+   <wangtile tileid="652" wangid="0,1,0,1,0,2,0,2"/>
+   <wangtile tileid="653" wangid="0,1,0,1,0,1,0,1"/>
+   <wangtile tileid="654" wangid="0,2,0,2,0,1,0,1"/>
+   <wangtile tileid="716" wangid="0,1,0,2,0,2,0,2"/>
+   <wangtile tileid="717" wangid="0,1,0,2,0,2,0,1"/>
+   <wangtile tileid="718" wangid="0,2,0,2,0,2,0,1"/>
+  </wangset>
+ </wangsets>
 </tileset>
