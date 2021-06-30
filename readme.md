@@ -13,6 +13,11 @@ target square outside of battle
 
 target part inside battle
 
+## Pushing to web
+
+```
+aws s3 rm s3://austinkucera.com/mechamon --recursive && aws s3 cp build/distributions/ s3://austinkucera.com/mechamon/ --recursive
+```
 
 ## Credits
 
