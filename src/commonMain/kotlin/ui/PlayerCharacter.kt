@@ -17,10 +17,12 @@ class PlayerCharacter(private val bot: Bot) : Container() {
     private lateinit var sprite: Sprite
     private lateinit var animator: PlayerAnimator
     private lateinit var useDoor: (Door) -> Unit
+    private lateinit var startBattle: (Tile) -> Unit
     private var facing = Direction.DOWN
 
-    suspend fun init(sceneChange: (Door) -> Unit) {
+    suspend fun init(sceneChange: (Door) -> Unit, startBattle: (Tile) -> Unit) {
         this.useDoor = sceneChange
+        this.startBattle = startBattle
         if (!doneSetup) {
             doneSetup = true
             buildSprite()
@@ -38,14 +40,13 @@ class PlayerCharacter(private val bot: Bot) : Container() {
         animator.evaluate(facing, false)
     }
 
-
     private fun setupControls() {
         keys {
             up(Key.SPACE) {
                 printTile()
             }
             up(Key.Z) {
-                Game.startBattle(Bot(), getTile(getSpriteAnchor())!!.type.terrain)
+                startBattle(getTile(getSpriteAnchor())!!)
             }
         }
         addUpdaterWithViews { views: Views, dt: TimeSpan ->

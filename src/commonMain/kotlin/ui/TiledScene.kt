@@ -12,6 +12,8 @@ import com.soywiz.korge.view.scaleView
 import com.soywiz.korio.async.launchImmediately
 import com.soywiz.korio.file.std.resourcesVfs
 import com.soywiz.korma.geom.Point
+import core.Battle
+import core.Bot
 
 class TiledScene(
     private val levelName: String,
@@ -22,8 +24,7 @@ class TiledScene(
     override suspend fun Container.sceneInit() {
         val tiledMap = resourcesVfs["$levelName.tmx"].readTiledMap()
         Game.terrain = parseTerrain(tiledMap)
-        removeChildren()
-        player.init(::useDoor)
+        player.init(::useDoor, ::startBattle)
 
         fixedSizeContainer(WINDOW_SIZE, WINDOW_SIZE, clip = false) {
             scaleView(WINDOW_SIZE, WINDOW_SIZE, 2.0, false) {
@@ -40,6 +41,17 @@ class TiledScene(
                 door.level,
                 player,
                 Point(door.x, door.y),
+                transition = AlphaTransition,
+                time = TimeSpan(500.0)
+            )
+        }
+    }
+
+    private fun startBattle(tile: Tile) {
+        val battle = Battle(Game.playerBot, Bot(), tile.type.terrain)
+        launchImmediately {
+            sceneContainer.changeTo<BattleScene>(
+                battle,
                 transition = AlphaTransition,
                 time = TimeSpan(500.0)
             )

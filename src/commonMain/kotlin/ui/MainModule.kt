@@ -17,5 +17,6 @@ object MainModule : Module() {
         mapInstance(PlayerCharacter(Game.playerBot))
         mapInstance(Point(0,0))
         mapPrototype { TiledScene(get(), get(), get()) }
+        mapPrototype { BattleScene(get()) }
     }
 }
