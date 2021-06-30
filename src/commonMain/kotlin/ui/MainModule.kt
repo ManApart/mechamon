@@ -3,9 +3,7 @@ package ui
 import WINDOW_SIZE
 import com.soywiz.korge.scene.Module
 import com.soywiz.korinject.AsyncInjector
-import com.soywiz.korma.geom.Point
-import com.soywiz.korma.geom.Size
-import com.soywiz.korma.geom.SizeInt
+import com.soywiz.korma.geom.*
 
 object MainModule : Module() {
     override val mainScene = TiledScene::class
@@ -13,8 +11,9 @@ object MainModule : Module() {
     override val size: SizeInt = SizeInt(Size(WINDOW_SIZE, WINDOW_SIZE))
     override val windowSize = size
     override val icon: String = "battleBackgrounds/Beach.png"
-
-
+    override val scaleMode: ScaleMode = ScaleMode.NO_SCALE
+    override val clipBorders: Boolean = false
+    override val scaleAnchor: Anchor = Anchor.TOP_LEFT
 
     override suspend fun AsyncInjector.configure() {
         mapInstance("map")
