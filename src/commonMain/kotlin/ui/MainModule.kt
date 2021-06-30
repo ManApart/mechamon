@@ -11,6 +11,10 @@ object MainModule : Module() {
     override val mainScene = TiledScene::class
     override val title: String = "Mechamon"
     override val size: SizeInt = SizeInt(Size(WINDOW_SIZE, WINDOW_SIZE))
+    override val windowSize = size
+    override val icon: String = "battleBackgrounds/Beach.png"
+
+
 
     override suspend fun AsyncInjector.configure() {
         mapInstance("map")

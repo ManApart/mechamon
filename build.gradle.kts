@@ -24,4 +24,5 @@ apply<KorgeGradlePlugin>()
 korge {
     id = "org.rak.manapart"
     targetJvm()
+    targetJs()
 }

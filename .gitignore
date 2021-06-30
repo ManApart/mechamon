@@ -5,3 +5,5 @@ out/
 bundles/
 *.xcf
 /concept/
+local.linux.properties
+local.properties
