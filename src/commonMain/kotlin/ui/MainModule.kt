@@ -10,7 +10,7 @@ object MainModule : Module() {
     override val title: String = "Mechamon"
     override val size: SizeInt = SizeInt(Size(WINDOW_SIZE, WINDOW_SIZE))
     override val windowSize = size
-    override val icon: String = "battleBackgrounds/Beach.png"
+    override val icon: String = "battleBackgrounds/Forest.png"
     override val scaleMode: ScaleMode = ScaleMode.NO_SCALE
     override val clipBorders: Boolean = false
     override val scaleAnchor: Anchor = Anchor.TOP_LEFT

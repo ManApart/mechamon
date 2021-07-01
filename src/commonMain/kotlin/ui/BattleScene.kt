@@ -2,10 +2,7 @@ package ui
 
 import WINDOW_SIZE
 import com.soywiz.korge.scene.Scene
-import com.soywiz.korge.view.Container
-import com.soywiz.korge.view.fixedSizeContainer
-import com.soywiz.korge.view.image
-import com.soywiz.korge.view.scaleView
+import com.soywiz.korge.view.*
 import core.Battle
 
 class BattleScene(private val battle: Battle) : Scene() {
@@ -15,7 +12,7 @@ class BattleScene(private val battle: Battle) : Scene() {
 
         fixedSizeContainer(WINDOW_SIZE, WINDOW_SIZE, clip = false) {
             scaleView(WINDOW_SIZE, WINDOW_SIZE, 2.0, false) {
-                image(background)
+                Image(background, 0.0, 0.0, smoothing = false).addTo(this)
             }
         }
     }
