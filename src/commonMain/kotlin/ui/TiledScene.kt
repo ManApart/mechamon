@@ -10,7 +10,6 @@ import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.fixedSizeContainer
 import com.soywiz.korge.view.scaleView
 import com.soywiz.korio.async.launchImmediately
-import com.soywiz.korio.file.std.resourcesVfs
 import com.soywiz.korma.geom.Point
 import core.Battle
 import core.Bot
@@ -22,7 +21,7 @@ class TiledScene(
 ) : Scene() {
 
     override suspend fun Container.sceneInit() {
-        val tiledMap = resourcesVfs["$levelName.tmx"].readTiledMap()
+        val tiledMap = Resources.getMap("$levelName.tmx")
         Game.terrain = parseTerrain(tiledMap)
         player.init(::useDoor, ::startBattle)
 

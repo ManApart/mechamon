@@ -38,7 +38,6 @@ class PlayerAnimator(image: Bitmap, private val sprite: Sprite) {
         )
     }
 
-
     fun evaluate(facing: Direction, isMoving: Boolean = true) {
         val anim = if (isMoving){
             movingAnims[facing]

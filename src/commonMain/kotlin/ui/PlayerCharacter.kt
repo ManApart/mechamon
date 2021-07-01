@@ -7,8 +7,6 @@ import com.soywiz.klock.milliseconds
 import com.soywiz.korev.Key
 import com.soywiz.korge.input.keys
 import com.soywiz.korge.view.*
-import com.soywiz.korim.format.readBitmap
-import com.soywiz.korio.file.std.resourcesVfs
 import com.soywiz.korma.geom.Point
 import core.Bot
 
@@ -31,7 +29,7 @@ class PlayerCharacter(private val bot: Bot) : Container() {
     }
 
     private suspend fun buildSprite() {
-        val image = resourcesVfs["character.png"].readBitmap()
+        val image = Resources.getImage("character.png")
         this.sprite = sprite()
         this.sprite.smoothing = false
         this.animator = PlayerAnimator(image, sprite)

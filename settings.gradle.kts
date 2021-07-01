@@ -1,2 +1,2 @@
-rootProject.name = "automon"
+rootProject.name = "mechamon"
 
