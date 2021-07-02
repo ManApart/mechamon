@@ -23,8 +23,9 @@ fun parseTerrain(tiledMap: TiledMap): TileMap {
 private fun getTileTypes(tiledMap: TiledMap): Map<Int, TileType> {
     return tiledMap.tilesets.first().data.tiles.map { data ->
         val id = data.id
-        val terrain = (data.properties["terrain"] as TiledMap.Property.StringT).value
-        TileType(id, terrain)
+        val terrainData = data.properties["terrain"] as TiledMap.Property.StringT?
+            ?: throw Exception("${data.id} does not have a terrain property!")
+        TileType(id, terrainData.value)
     }.associateBy { it.id }
 }
 

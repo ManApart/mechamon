@@ -56,6 +56,39 @@
    <property name="terrain" value="Boulder"/>
   </properties>
  </tile>
+ <tile id="320">
+  <properties>
+   <property name="terrain" value="Grass"/>
+  </properties>
+  <animation>
+   <frame tileid="320" duration="500"/>
+   <frame tileid="321" duration="500"/>
+   <frame tileid="322" duration="500"/>
+   <frame tileid="323" duration="500"/>
+  </animation>
+ </tile>
+ <tile id="448">
+  <properties>
+   <property name="terrain" value="Grass"/>
+  </properties>
+  <animation>
+   <frame tileid="448" duration="500"/>
+   <frame tileid="449" duration="500"/>
+   <frame tileid="450" duration="500"/>
+   <frame tileid="451" duration="500"/>
+  </animation>
+ </tile>
+ <tile id="845">
+  <properties>
+   <property name="terrain" value="Water"/>
+  </properties>
+  <animation>
+   <frame tileid="1792" duration="500"/>
+   <frame tileid="1793" duration="500"/>
+   <frame tileid="1794" duration="500"/>
+   <frame tileid="1795" duration="500"/>
+  </animation>
+ </tile>
  <tile id="961">
   <properties>
    <property name="terrain" value="Boulder"/>
@@ -70,6 +103,17 @@
   <properties>
    <property name="terrain" value="Boulder"/>
   </properties>
+ </tile>
+ <tile id="1792">
+  <properties>
+   <property name="terrain" value="Water"/>
+  </properties>
+  <animation>
+   <frame tileid="1792" duration="500"/>
+   <frame tileid="1793" duration="500"/>
+   <frame tileid="1794" duration="500"/>
+   <frame tileid="1795" duration="500"/>
+  </animation>
  </tile>
  <wangsets>
   <wangset name="Unnamed Set" type="corner" tile="-1">

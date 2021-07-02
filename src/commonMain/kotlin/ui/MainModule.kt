@@ -16,8 +16,8 @@ import ui.tiledScene.TileType
 import ui.tiledScene.TiledScene
 
 object MainModule : Module() {
-    override val mainScene = BattleScene::class
-//    override val mainScene = TiledScene::class
+//    override val mainScene = BattleScene::class
+    override val mainScene = TiledScene::class
     override val title: String = "Mechamon"
     override val size: SizeInt = SizeInt(Size(WINDOW_SIZE, WINDOW_SIZE))
     override val windowSize = size

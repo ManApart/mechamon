@@ -1,12 +1,10 @@
 package ui.tiledScene
 
+import Game
 import WINDOW_SIZE
 import com.soywiz.klock.TimeSpan
-import com.soywiz.klock.seconds
-import com.soywiz.korau.sound.await
 import com.soywiz.korge.scene.AlphaTransition
 import com.soywiz.korge.scene.Scene
-import com.soywiz.korge.scene.delay
 import com.soywiz.korge.tiled.tiledMapView
 import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.fixedSizeContainer

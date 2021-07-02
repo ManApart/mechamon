@@ -42,6 +42,9 @@ aws s3 sync build/distributions/ s3://austinkucera.com/mechamon/ --delete
 
 ## Credits
 
+Engine
+- [Korge](https://github.com/korlibs/korge)
+
 Art
 - Font from [Zelda Like Tilesets and Sprites](https://opengameart.org/content/zelda-like-tilesets-and-sprites)
 - Tileset from [Isaiah658's Pixel Pack](https://opengameart.org/content/isaiah658s-pixel-pack-2)

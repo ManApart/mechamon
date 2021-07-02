@@ -17,5 +17,6 @@ val terrains = listOf(
         bumpy = 3,
         tightQuarters = 4
     ),
-    Terrain("Boulder", "None", "A large, impassable rock"),
+    Terrain("Boulder", "None", "A large, impassable rock."),
+    Terrain("Water", "None", "Deep water."),
 ).associateBy { it.name }
