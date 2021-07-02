@@ -24,11 +24,14 @@ target part inside battle
 ## Pushing to web
 
 ```
-aws s3 rm s3://austinkucera.com/mechamon --recursive && aws s3 cp build/distributions/ s3://austinkucera.com/mechamon/ --recursive
+aws s3 sync build/distributions/ s3://austinkucera.com/mechamon/ --delete
 ```
 
 ## Credits
 
-- [Zelda Like Tilesets and Sprites](https://opengameart.org/content/zelda-like-tilesets-and-sprites)
-- [LPC Atlas Tiles](https://opengameart.org/content/lpc-tile-atlas)
-- [Isaiah658's Pixel Pack](https://opengameart.org/content/isaiah658s-pixel-pack-2)
+Art
+- Font from [Zelda Like Tilesets and Sprites](https://opengameart.org/content/zelda-like-tilesets-and-sprites)
+- Tileset from [Isaiah658's Pixel Pack](https://opengameart.org/content/isaiah658s-pixel-pack-2)
+
+Music
+- [Role Music](https://freemusicarchive.org/music/Rolemusic/The_Pirate_And_The_Dancer)

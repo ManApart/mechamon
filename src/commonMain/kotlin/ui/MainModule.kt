@@ -4,6 +4,9 @@ import WINDOW_SIZE
 import com.soywiz.korge.scene.Module
 import com.soywiz.korinject.AsyncInjector
 import com.soywiz.korma.geom.*
+import ui.battleScene.BattleScene
+import ui.tiledScene.PlayerCharacter
+import ui.tiledScene.TiledScene
 
 object MainModule : Module() {
     override val mainScene = TiledScene::class
