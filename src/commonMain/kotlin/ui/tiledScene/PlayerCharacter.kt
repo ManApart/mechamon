@@ -52,20 +52,23 @@ class PlayerCharacter(private val bot: Bot) : Container() {
             var dx = 0.0
             var dy = 0.0
             val scale = if (dt == 0.0.milliseconds) 0.0 else (dt / 16.666666.milliseconds)
-            if (views.input.keys[Key.RIGHT]) dx = 1.0 * scale
-            if (views.input.keys[Key.LEFT]) dx = -1.0 * scale
-            if (views.input.keys[Key.UP]) dy = -1.0 * scale
-            if (views.input.keys[Key.DOWN]) dy = 1.0 * scale
-            tryMove(dx, dy)
+            val startTile = getTile(getSpriteAnchor())!!
+            val terrainMovement = bot.core.getMovement(startTile.type.terrain) / 200.toDouble()
+            val movement = 0.5 + terrainMovement //Min speed of 0.5, max speed of 1 if you have 100% movement
+
+            if (views.input.keys[Key.RIGHT]) dx = movement * scale
+            if (views.input.keys[Key.LEFT]) dx = -movement * scale
+            if (views.input.keys[Key.UP]) dy = -movement * scale
+            if (views.input.keys[Key.DOWN]) dy = movement * scale
+            tryMove(startTile, dx, dy)
         }
     }
 
-    private fun tryMove(xd: Double = 0.0, yd: Double = 0.0) {
+    private fun tryMove(startTile: Tile, xd: Double = 0.0, yd: Double = 0.0) {
         val source = getSpriteAnchor()
         if (source.x + xd < sprite.width / 2 || source.y + yd < sprite.height / 2) {
             return
         }
-        val oldTile = getTile(source)
 
         when {
             xd != 0.0 && yd != 0.0 && canMove(source, xd, yd) -> {
@@ -73,19 +76,19 @@ class PlayerCharacter(private val bot: Bot) : Container() {
                 sprite.y += yd
                 facing = fromDelta(xd, yd)
                 animator.evaluate(facing)
-                tileChanged(oldTile)
+                tileChanged(startTile)
             }
             xd != 0.0 && canMove(source, xd, 0.0) -> {
                 sprite.x += xd
                 facing = fromDelta(xd, 0.0)
                 animator.evaluate(facing)
-                tileChanged(oldTile)
+                tileChanged(startTile)
             }
             yd != 0.0 && canMove(source, 0.0, yd) -> {
                 sprite.y += yd
                 facing = fromDelta(0.0, yd)
                 animator.evaluate(facing)
-                tileChanged(oldTile)
+                tileChanged(startTile)
             }
             else -> {
                 animator.evaluate(facing, false)
@@ -111,15 +114,16 @@ class PlayerCharacter(private val bot: Bot) : Container() {
     }
 
     private fun printTile() {
-        val tile = getTile(getSpriteAnchor())
-        println("Standing on $tile")
+        val tile = getTile(getSpriteAnchor())!!
+        val move = bot.core.getMovement(tile.type.terrain)
+        println("Standing on $tile with movement $move")
     }
 
-    private fun tileChanged(oldTile: Tile?) {
+    private fun tileChanged(oldTile: Tile) {
         val newTile = getTile(getSpriteAnchor())
         if (newTile != null && newTile != oldTile) {
             if (newTile.door != null) {
-                useDoor(newTile.door!!)
+                useDoor(newTile.door)
             }
         }
     }
