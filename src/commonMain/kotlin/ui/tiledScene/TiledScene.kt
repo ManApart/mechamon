@@ -31,7 +31,7 @@ class TiledScene(
         val tiledMap = Resources.getMap("$levelName.tmx")
         Game.terrain = parseTerrain(tiledMap)
         musicName = parseMusic(tiledMap)
-        launchImmediately { play("music/$musicName.mp3") }
+        play(coroutineContext, "music/$musicName.mp3")
 
         player.init(::useDoor, ::startBattle)
 

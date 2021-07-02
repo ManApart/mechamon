@@ -19,7 +19,7 @@ class BattleScene(private val config: BattleConfig) : Scene() {
 
     override suspend fun Container.sceneInit() {
         val background = Resources.getImage("battleBackgrounds/${config.battle.terrain.battleName}.png")
-        launchImmediately { play("music/battle/${config.musicName}.mp3") }
+        play(coroutineContext, "music/battle/${config.musicName}.mp3")
 
 
         fixedSizeContainer(WINDOW_SIZE, WINDOW_SIZE, clip = false) {
