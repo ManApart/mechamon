@@ -4,7 +4,9 @@ import core.Battle
 import core.Bot
 
 class BattleOption(
+    val battle: Battle,
+    val bot: Bot,
     val displayText: String,
-    val action: (Battle, Bot) -> Unit = { _, _ -> println("Pressed $displayText") }
+    val action: () -> Unit = { println("Pressed $displayText") }
 ) {
 }
