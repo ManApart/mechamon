@@ -12,14 +12,13 @@ runJs
 jsBrowserDistribution
 ```
 
+## Data
 
-## Thoughts
+Doors are objects in the tileset and include `level` `x` and `y` as custom properties.
 
-add range to parts
+The first tile layer of a `tmx` has a custom property `music` (eg `bgm`). `music/bgm` is used on the tiled views and `music/battle/bgm` is used in battles.
 
-target square outside of battle
-
-target part inside battle
+Each terrain specifies a battle name (eg `Dirt`), which links to `battleBackgrounds/Dirt.png` that is loaded in a battle
 
 ## Pushing to web
 
@@ -35,3 +34,13 @@ Art
 
 Music
 - [Role Music](https://freemusicarchive.org/music/Rolemusic/The_Pirate_And_The_Dancer)
+
+
+
+## Thoughts
+
+add range to parts
+
+target square outside of battle
+
+target part inside battle

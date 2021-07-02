@@ -8,7 +8,7 @@ import com.soywiz.korio.async.launchImmediately
 import kotlin.coroutines.CoroutineContext
 
 suspend fun play(ctx: CoroutineContext, musicName: String?, delay: Int = 500) {
-    if (musicName != null) {
+    if (musicName != null && !musicName.endsWith("null.mp3")) {
         val music = Resources.getMusic(musicName)
         play(ctx, music, delay)
     }

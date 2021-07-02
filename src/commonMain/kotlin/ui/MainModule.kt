@@ -4,12 +4,20 @@ import WINDOW_SIZE
 import com.soywiz.korge.scene.Module
 import com.soywiz.korinject.AsyncInjector
 import com.soywiz.korma.geom.*
+import core.Battle
+import core.Bot
+import core.Terrain
+import data.terrains
+import ui.battleScene.BattleConfig
 import ui.battleScene.BattleScene
 import ui.tiledScene.PlayerCharacter
+import ui.tiledScene.Tile
+import ui.tiledScene.TileType
 import ui.tiledScene.TiledScene
 
 object MainModule : Module() {
-    override val mainScene = TiledScene::class
+    override val mainScene = BattleScene::class
+//    override val mainScene = TiledScene::class
     override val title: String = "Mechamon"
     override val size: SizeInt = SizeInt(Size(WINDOW_SIZE, WINDOW_SIZE))
     override val windowSize = size
@@ -22,6 +30,7 @@ object MainModule : Module() {
         mapInstance("map")
         mapInstance(PlayerCharacter(Game.playerBot))
         mapInstance(Point(0,0))
+        mapInstance(BattleConfig(Battle(Bot(), Bot(), terrains["Dirt"]!!), "map", Tile(0, 0, TileType(0, "Dirt"))))
         mapPrototype { TiledScene(get(), get(), get()) }
         mapPrototype { BattleScene(get()) }
     }
