@@ -8,13 +8,18 @@ import com.soywiz.korge.scene.AlphaTransition
 import com.soywiz.korge.scene.Scene
 import com.soywiz.korge.view.*
 import com.soywiz.korio.async.launchImmediately
+import core.Battle
+import core.Bot
 import ui.Resources
 import ui.play
 import ui.tiledScene.Direction
 import ui.tiledScene.PlayerCharacter
 import ui.tiledScene.TiledScene
+import kotlin.properties.Delegates
 
 class BattleScene(private val config: BattleConfig) : Scene() {
+    var battleControls: BattleControls by Delegates.notNull()
+    var screen: Container by Delegates.notNull()
 
     override suspend fun Container.sceneInit() {
         val background = Resources.getImage("battleBackgrounds/${config.battle.terrain.battleName}.png")
@@ -25,14 +30,17 @@ class BattleScene(private val config: BattleConfig) : Scene() {
         val playerCombatant = Combatant(bot, Direction.RIGHT)
         val enemyCombatant = Combatant(bot, Direction.LEFT)
 
-        val up = BattleOption(battle, bot, "Inspect")
-        val right = BattleOption(battle, bot, "Action")
-        val left = BattleOption(battle, bot, "Flee") { endBattle() }
-        val down = BattleOption(battle, bot, "Self")
-        val battleControls = BattleControls(up, down, left, right)
+        battleControls = getBattleControls(battle, bot)
+
+        keys {
+            up(Key.SPACE) {
+                battleControls.selectedAction?.action?.invoke()
+            }
+        }
+
 
         fixedSizeContainer(WINDOW_SIZE, WINDOW_SIZE, clip = false) {
-            scaleView(WINDOW_SIZE, WINDOW_SIZE, 2.0, false) {
+            screen = scaleView(WINDOW_SIZE, WINDOW_SIZE, 2.0, false) {
                 Image(background, 0.0, 0.0, smoothing = false).addTo(this)
                 addChild(playerCombatant)
                 playerCombatant.init()
@@ -45,6 +53,21 @@ class BattleScene(private val config: BattleConfig) : Scene() {
 
             }
         }
+    }
+
+    private fun getBattleControls(battle: Battle, bot: Bot, highlighted: Direction? = null): BattleControls {
+        val up = BattleOption(battle, bot, "Inspect")
+        val right = BattleOption(battle, bot, "Action")
+        val left = BattleOption(battle, bot, "Flee") { endBattle() }
+        val down = BattleOption(battle, bot, "Self")
+        return BattleControls(up, down, left, right, ::reDrawOptions, highlighted)
+    }
+
+    private fun reDrawOptions(highlighted: Direction? = null) {
+        screen.removeChild(battleControls)
+        battleControls = getBattleControls(config.battle, config.battle.botA, highlighted)
+        screen.addChild(battleControls)
+        battleControls.init()
     }
 
     private fun endBattle() {

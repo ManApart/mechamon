@@ -12,6 +12,20 @@ runJs
 jsBrowserDistribution
 ```
 
+### Controls
+
+#### Tiled Scenes
+
+Arrow Keys - move
+Space - Print tile information
+Z - Start a battle (debug since no enemies yet)
+
+##### Battle Scenes
+
+Arrow Keys - select an option
+Space - pick that option
+Esc - Go back from sub options
+
 ## Data
 
 Doors are objects in the tileset and include `level` `x` and `y` as custom properties.

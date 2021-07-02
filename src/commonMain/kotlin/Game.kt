@@ -5,5 +5,5 @@ import kotlin.properties.Delegates
 object Game {
     var terrain: TileMap by Delegates.notNull()
     var playerBot = Bot()
-    var muted = true
+    var muted = false
 }
