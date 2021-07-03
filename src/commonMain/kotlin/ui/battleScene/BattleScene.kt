@@ -15,11 +15,12 @@ import ui.tiledScene.TiledScene
 import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
 
-class BattleScene(private val config: BattleConfig) : Scene() {
+class BattleScene(val config: BattleConfig) : Scene() {
     var screen: Container by Delegates.notNull()
     var context: CoroutineContext by Delegates.notNull()
 
     override suspend fun Container.sceneInit() {
+        config.battle.tick()
         val backgroundPic = Resources.getImage("battleBackgrounds/${config.battle.terrain.battleName}.png")
         val background = Image(backgroundPic, 0.0, 0.0, smoothing = false)
         play(coroutineContext, "music/battle/${config.musicName}.mp3")
@@ -35,12 +36,12 @@ class BattleScene(private val config: BattleConfig) : Scene() {
             context = coroutineContext
         }
 
-        val options = TopLevel(screen, background, playerCombatant, enemyCombatant, ::endBattle, context)
+        val options = TopLevel(this@BattleScene, background, playerCombatant, enemyCombatant)
         options.reDraw()
     }
 
 
-    private fun endBattle() {
+    fun endBattle() {
         launchImmediately {
             sceneContainer.changeTo<TiledScene>(
                 config.level,

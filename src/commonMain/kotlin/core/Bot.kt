@@ -11,16 +11,6 @@ class Bot(
     var armRight: Arm = arms["StandardRight"]!!,
     var armLeft: Arm = arms["StandardLeft"]!!
 ) {
-
-    fun getActions(): List<ActionChoice> {
-        val ap = head.totalAP
-
-        return listOf(head, core, armLeft, armRight)
-            .filter { it.health > 0 }
-            .filter { it.action != NOTHING }
-            .map { ActionChoice(it.action, ap) }
-            .toMutableList()
-            .also { it.add(ActionChoice(NOTHING, true)) }
-    }
+    var mp = 0
 
 }

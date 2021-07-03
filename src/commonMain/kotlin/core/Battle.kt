@@ -3,11 +3,11 @@ package core
 class Battle(val botA: Bot, val botB: Bot, val terrain: Terrain) {
     var distance = 10
 
-    fun getOpponent(bot: Bot) : Bot {
+    fun getOpponent(bot: Bot): Bot {
         return if (bot == botA) botB else botA
     }
 
-    fun getWinner() : Bot? {
+    fun getWinner(): Bot? {
         return when {
             botA.head.health == 0 -> botB
             botB.head.health == 0 -> botA
@@ -15,8 +15,8 @@ class Battle(val botA: Bot, val botB: Bot, val terrain: Terrain) {
         }
     }
 
-//    fun tick(){
-//        botA.ai.takeTurn(this)
-//        botB.ai.takeTurn(this)
-//    }
+    fun tick() {
+        botA.mp = botA.core.getMovement(terrain) / 10
+        botB.mp = botB.core.getMovement(terrain) / 10
+    }
 }
