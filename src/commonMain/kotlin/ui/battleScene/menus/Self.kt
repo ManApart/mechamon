@@ -13,7 +13,7 @@ import ui.tiledScene.Direction
 class Self(
     private val parentView: Container,
     private val background: Image,
-    private val playerCombatant: Combatant,
+    private val combatant: Combatant,
     private val backMenu: TopLevel
 ) {
     private var battleControls = getControls()
@@ -34,8 +34,8 @@ class Self(
         parentView.removeChildren()
 
         background.addTo(parentView)
-        parentView.addChild(playerCombatant)
-        playerCombatant.init()
+        parentView.addChild(combatant)
+        combatant.init()
 
         parentView.addChild(battleControls)
         battleControls.init()
@@ -49,7 +49,7 @@ class Self(
     }
 
     private fun getControls(highlighted: Direction? = null): BattleControls {
-        val bot = playerCombatant.bot
+        val bot = combatant.bot
         val up = BattleOption("${bot.head.health}/${bot.head.totalHealth}")
         val right = BattleOption("${bot.armRight.health}/${bot.armRight.totalHealth}")
         val left = BattleOption("${bot.armLeft.health}/${bot.armLeft.totalHealth}")

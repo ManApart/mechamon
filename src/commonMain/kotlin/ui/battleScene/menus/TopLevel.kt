@@ -23,6 +23,7 @@ class TopLevel(
 ) {
     private var battleControls = getControls()
     private val selfMenu by lazy { Self(parentView, background, playerCombatant, this) }
+    private val inspectMenu by lazy { Self(parentView, background, enemyCombatant, this) }
 
 
     init {
@@ -54,7 +55,7 @@ class TopLevel(
     }
 
     private fun getControls(highlighted: Direction? = null): BattleControls {
-        val up = BattleOption("Inspect")
+        val up = BattleOption("Inspect") { launchImmediately(context) { inspectMenu.reDraw() }}
         val right = BattleOption("Action")
         val left = BattleOption("Flee") { endBattle() }
         val down = BattleOption("Self") { launchImmediately(context) { selfMenu.reDraw() } }
