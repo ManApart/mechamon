@@ -7,7 +7,7 @@ import core.Bot
 import ui.Resources
 import ui.tiledScene.Direction
 
-class Combatant(private val bot: Bot, private val facing: Direction) : Container() {
+class Combatant(val bot: Bot, private val facing: Direction) : Container() {
     private lateinit var sprite: Sprite
 
     suspend fun init() {
