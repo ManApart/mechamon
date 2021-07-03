@@ -14,12 +14,11 @@ class Inspect(
     private val parent: BattleScene,
     private val background: Image,
     private val combatant: Combatant,
-    private val backMenu: TopLevel
+    private val backMenu: InspectWho
 ) {
     private var battleControls = getControls()
 
-
-    init {
+    suspend fun reDraw() {
         parent.screen.keys {
             up(Key.SPACE) {
                 battleControls.selectedAction?.action?.invoke()
@@ -28,9 +27,7 @@ class Inspect(
                 backMenu.reDraw()
             }
         }
-    }
 
-    suspend fun reDraw() {
         parent.screen.removeChildren()
 
         background.addTo(parent.screen)
