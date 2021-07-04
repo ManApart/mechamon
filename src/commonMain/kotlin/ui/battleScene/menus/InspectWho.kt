@@ -1,8 +1,7 @@
 package ui.battleScene.menus
 
-import com.soywiz.korev.Key
-import com.soywiz.korge.input.keys
-import com.soywiz.korge.view.*
+import com.soywiz.korge.view.Image
+import com.soywiz.korge.view.addTo
 import com.soywiz.korio.async.launchImmediately
 import ui.battleScene.BattleControls
 import ui.battleScene.BattleOption
@@ -16,21 +15,12 @@ class InspectWho(
     private val playerCombatant: Combatant,
     private val enemyCombatant: Combatant,
     private val backMenu: TopLevel
-) {
+) : BattleMenu {
     private var battleControls = getControls()
     private val inspectSelfMenu by lazy { Inspect(parent, background, playerCombatant, this) }
     private val inspectThemMenu by lazy { Inspect(parent, background, enemyCombatant, this) }
 
-    suspend fun reDraw() {
-        parent.screen.keys {
-            up(Key.SPACE) {
-                battleControls.selectedAction?.action?.invoke()
-            }
-            up(Key.ESCAPE) {
-                backMenu.reDraw()
-            }
-        }
-
+    override suspend fun reDraw() {
         parent.screen.removeChildren()
         background.addTo(parent.screen)
         parent.screen.addChild(playerCombatant)
@@ -43,6 +33,14 @@ class InspectWho(
         battleControls.init()
     }
 
+    override suspend fun onAccept() {
+        battleControls.selectedAction?.action?.invoke()
+    }
+
+    override suspend fun onBack() {
+        parent.draw(backMenu)
+    }
+
     private fun reDrawOptions(highlighted: Direction? = null) {
         parent.screen.removeChild(battleControls)
         battleControls = getControls(highlighted)
@@ -53,15 +51,13 @@ class InspectWho(
     private fun getControls(highlighted: Direction? = null): BattleControls {
         val up = BattleOption("")
         val right = BattleOption("Them") {
-            launchImmediately(parent.context) { inspectThemMenu.reDraw() }
+            parent.draw(inspectThemMenu)
         }
         val left = BattleOption("You") {
-            launchImmediately(parent.context) { inspectSelfMenu.reDraw() }
+            parent.draw(inspectSelfMenu)
         }
         val down = BattleOption("Back") {
-            launchImmediately(parent.context) {
-                backMenu.reDraw()
-            }
+            parent.draw(backMenu)
         }
         return BattleControls(up, down, left, right, ::reDrawOptions, highlighted)
     }

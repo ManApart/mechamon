@@ -15,19 +15,10 @@ class Inspect(
     private val background: Image,
     private val combatant: Combatant,
     private val backMenu: InspectWho
-) {
+) : BattleMenu {
     private var battleControls = getControls()
 
-    suspend fun reDraw() {
-        parent.screen.keys {
-            up(Key.SPACE) {
-                battleControls.selectedAction?.action?.invoke()
-            }
-            up(Key.ESCAPE) {
-                backMenu.reDraw()
-            }
-        }
-
+    override suspend fun reDraw() {
         parent.screen.removeChildren()
 
         background.addTo(parent.screen)
@@ -42,6 +33,14 @@ class Inspect(
 
         parent.screen.addChild(battleControls)
         battleControls.init()
+    }
+
+    override suspend fun onAccept() {
+        battleControls.selectedAction?.action?.invoke()
+    }
+
+    override suspend fun onBack() {
+        parent.draw(backMenu)
     }
 
     private fun reDrawOptions(highlighted: Direction? = null) {

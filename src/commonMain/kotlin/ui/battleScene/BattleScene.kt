@@ -2,11 +2,14 @@ package ui.battleScene
 
 import WINDOW_SIZE
 import com.soywiz.klock.TimeSpan
+import com.soywiz.korev.Key
+import com.soywiz.korge.input.keys
 import com.soywiz.korge.scene.AlphaTransition
 import com.soywiz.korge.scene.Scene
 import com.soywiz.korge.view.*
 import com.soywiz.korio.async.launchImmediately
 import ui.Resources
+import ui.battleScene.menus.BattleMenu
 import ui.battleScene.menus.TopLevel
 import ui.play
 import ui.tiledScene.Direction
@@ -17,7 +20,8 @@ import kotlin.properties.Delegates
 
 class BattleScene(val config: BattleConfig) : Scene() {
     var screen: Container by Delegates.notNull()
-    var context: CoroutineContext by Delegates.notNull()
+    var activeMenu: BattleMenu by Delegates.notNull()
+
 
     override suspend fun Container.sceneInit() {
         config.battle.tick()
@@ -33,13 +37,27 @@ class BattleScene(val config: BattleConfig) : Scene() {
 
         fixedSizeContainer(WINDOW_SIZE, WINDOW_SIZE, clip = false) {
             screen = scaleView(WINDOW_SIZE, WINDOW_SIZE, 2.0, false)
-            context = coroutineContext
         }
 
-        val options = TopLevel(this@BattleScene, background, playerCombatant, enemyCombatant)
-        options.reDraw()
+        keys {
+            up(Key.SPACE) {
+                activeMenu.onAccept()
+            }
+            up(Key.ESCAPE) {
+                activeMenu.onBack()
+            }
+        }
+
+        draw(TopLevel(this@BattleScene, background, playerCombatant, enemyCombatant))
+
     }
 
+    fun draw(menu: BattleMenu) {
+        launchImmediately {
+            activeMenu = menu
+            menu.reDraw()
+        }
+    }
 
     fun endBattle() {
         launchImmediately {

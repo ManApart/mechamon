@@ -1,10 +1,7 @@
 package ui.battleScene.menus
 
-import com.soywiz.korev.Key
-import com.soywiz.korge.input.keys
 import com.soywiz.korge.view.Image
 import com.soywiz.korge.view.addTo
-import com.soywiz.korio.async.launchImmediately
 import ui.battleScene.BattleControls
 import ui.battleScene.BattleOption
 import ui.battleScene.BattleScene
@@ -16,18 +13,11 @@ class TopLevel(
     private val background: Image,
     private val playerCombatant: Combatant,
     private val enemyCombatant: Combatant,
-
-    ) {
+) : BattleMenu {
     private var battleControls = getControls()
     private val inspectMenu by lazy { InspectWho(parent, background, playerCombatant, enemyCombatant, this) }
 
-    suspend fun reDraw() {
-        parent.screen.keys {
-            up(Key.SPACE) {
-                battleControls.selectedAction?.action?.invoke()
-            }
-        }
-
+    override suspend fun reDraw() {
         parent.screen.removeChildren()
         background.addTo(parent.screen)
         parent.screen.addChild(playerCombatant)
@@ -40,6 +30,14 @@ class TopLevel(
         battleControls.init()
     }
 
+    override suspend fun onAccept() {
+        battleControls.selectedAction?.action?.invoke()
+    }
+
+    override suspend fun onBack() {
+        println("Top Level back")
+    }
+
     private fun reDrawOptions(highlighted: Direction? = null) {
         parent.screen.removeChild(battleControls)
         battleControls = getControls(highlighted)
@@ -48,7 +46,7 @@ class TopLevel(
     }
 
     private fun getControls(highlighted: Direction? = null): BattleControls {
-        val up = BattleOption("Inspect") { launchImmediately(parent.context) { inspectMenu.reDraw() } }
+        val up = BattleOption("Inspect") { parent.draw(inspectMenu) }
         val right = BattleOption("Action")
         val left = BattleOption("Flee") { parent.endBattle() }
         val down = BattleOption("Done")
