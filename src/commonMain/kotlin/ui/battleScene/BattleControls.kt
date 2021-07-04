@@ -10,23 +10,25 @@ class BattleControls(
     private val up: BattleOption,
     private val down: BattleOption,
     private val left: BattleOption,
-    private val right: BattleOption,
-    private val updateChoice: (Direction) -> Unit,
-    private val selected: Direction? = null
+    private val right: BattleOption
 ) : Container() {
-    val selectedAction: BattleOption? = when (selected) {
-        Direction.UP -> up
-        Direction.DOWN -> down
-        Direction.LEFT -> left
-        Direction.RIGHT -> right
-        else -> null
+    var selectedAction: BattleOption = determineSelectedAction(Direction.UP)
+
+    private fun determineSelectedAction(selected: Direction) : BattleOption{
+         return when (selected) {
+            Direction.UP -> up
+            Direction.DOWN -> down
+            Direction.LEFT -> left
+            Direction.RIGHT -> right
+         }
     }
 
     fun init() {
-        createButton(60, 90, up.displayText, selected == Direction.UP)
-        createButton(80, 110, right.displayText, selected == Direction.RIGHT)
-        createButton(40, 110, left.displayText, selected == Direction.LEFT)
-        createButton(60, 130, down.displayText, selected == Direction.DOWN)
+        setupControls()
+        draw(Direction.UP)
+    }
+
+    private fun setupControls() {
         keys {
             up(Key.UP) {
                 updateChoice(Direction.UP)
@@ -43,6 +45,13 @@ class BattleControls(
         }
     }
 
+    private fun draw(highlighted: Direction) {
+        createButton(60, 90, up.displayText, highlighted == Direction.UP)
+        createButton(80, 110, right.displayText, highlighted == Direction.RIGHT)
+        createButton(40, 110, left.displayText, highlighted == Direction.LEFT)
+        createButton(60, 130, down.displayText, highlighted == Direction.DOWN)
+    }
+
     private fun createButton(x: Int, y: Int, displayText: String, highlighted: Boolean) {
         if (highlighted) {
             roundRect(40.0, 20.0, 2.0, fill = Colors.BLACK) {
@@ -53,7 +62,12 @@ class BattleControls(
             position(x, y)
         }
         text(displayText).centerOn(button)
+    }
 
+    private fun updateChoice(highlighted: Direction) {
+        this.selectedAction = determineSelectedAction(highlighted)
+        removeChildren()
+        draw(highlighted)
     }
 
 

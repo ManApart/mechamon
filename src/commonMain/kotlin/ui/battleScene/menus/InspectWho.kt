@@ -2,12 +2,10 @@ package ui.battleScene.menus
 
 import com.soywiz.korge.view.Image
 import com.soywiz.korge.view.addTo
-import com.soywiz.korio.async.launchImmediately
 import ui.battleScene.BattleControls
 import ui.battleScene.BattleOption
 import ui.battleScene.BattleScene
 import ui.battleScene.Combatant
-import ui.tiledScene.Direction
 
 class InspectWho(
     private val parent: BattleScene,
@@ -20,7 +18,7 @@ class InspectWho(
     private val inspectSelfMenu by lazy { Inspect(parent, background, playerCombatant, this) }
     private val inspectThemMenu by lazy { Inspect(parent, background, enemyCombatant, this) }
 
-    override suspend fun reDraw() {
+    override suspend fun draw() {
         parent.screen.removeChildren()
         background.addTo(parent.screen)
         parent.screen.addChild(playerCombatant)
@@ -34,21 +32,14 @@ class InspectWho(
     }
 
     override suspend fun onAccept() {
-        battleControls.selectedAction?.action?.invoke()
+        battleControls.selectedAction.action.invoke()
     }
 
     override suspend fun onBack() {
         parent.draw(backMenu)
     }
 
-    private fun reDrawOptions(highlighted: Direction? = null) {
-        parent.screen.removeChild(battleControls)
-        battleControls = getControls(highlighted)
-        parent.screen.addChild(battleControls)
-        battleControls.init()
-    }
-
-    private fun getControls(highlighted: Direction? = null): BattleControls {
+    private fun getControls(): BattleControls {
         val up = BattleOption("")
         val right = BattleOption("Them") {
             parent.draw(inspectThemMenu)
@@ -59,7 +50,7 @@ class InspectWho(
         val down = BattleOption("Back") {
             parent.draw(backMenu)
         }
-        return BattleControls(up, down, left, right, ::reDrawOptions, highlighted)
+        return BattleControls(up, down, left, right)
     }
 
 }

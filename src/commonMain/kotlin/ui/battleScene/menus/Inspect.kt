@@ -1,14 +1,11 @@
 package ui.battleScene.menus
 
-import com.soywiz.korev.Key
-import com.soywiz.korge.input.keys
 import com.soywiz.korge.view.*
 import com.soywiz.korim.color.Colors
 import ui.battleScene.BattleControls
 import ui.battleScene.BattleOption
 import ui.battleScene.BattleScene
 import ui.battleScene.Combatant
-import ui.tiledScene.Direction
 
 class Inspect(
     private val parent: BattleScene,
@@ -18,7 +15,7 @@ class Inspect(
 ) : BattleMenu {
     private var battleControls = getControls()
 
-    override suspend fun reDraw() {
+    override suspend fun draw() {
         parent.screen.removeChildren()
 
         background.addTo(parent.screen)
@@ -36,27 +33,20 @@ class Inspect(
     }
 
     override suspend fun onAccept() {
-        battleControls.selectedAction?.action?.invoke()
+        battleControls.selectedAction.action.invoke()
     }
 
     override suspend fun onBack() {
         parent.draw(backMenu)
     }
 
-    private fun reDrawOptions(highlighted: Direction? = null) {
-        parent.screen.removeChild(battleControls)
-        battleControls = getControls(highlighted)
-        parent.screen.addChild(battleControls)
-        battleControls.init()
-    }
-
-    private fun getControls(highlighted: Direction? = null): BattleControls {
+    private fun getControls(): BattleControls {
         val bot = combatant.bot
         val up = BattleOption("${bot.head.health}/${bot.head.totalHealth}")
         val right = BattleOption("${bot.armRight.health}/${bot.armRight.totalHealth}")
         val left = BattleOption("${bot.armLeft.health}/${bot.armLeft.totalHealth}")
         val down = BattleOption("${bot.core.health}/${bot.core.totalHealth}")
-        return BattleControls(up, down, left, right, ::reDrawOptions, highlighted)
+        return BattleControls(up, down, left, right)
     }
 
     private fun createInfo(x: Int, y: Int, displayText: String) {

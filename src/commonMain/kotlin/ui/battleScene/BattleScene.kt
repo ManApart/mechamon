@@ -15,7 +15,6 @@ import ui.play
 import ui.tiledScene.Direction
 import ui.tiledScene.PlayerCharacter
 import ui.tiledScene.TiledScene
-import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
 
 class BattleScene(val config: BattleConfig) : Scene() {
@@ -55,7 +54,7 @@ class BattleScene(val config: BattleConfig) : Scene() {
     fun draw(menu: BattleMenu) {
         launchImmediately {
             activeMenu = menu
-            menu.reDraw()
+            menu.draw()
         }
     }
 
