@@ -37,7 +37,7 @@ Each terrain specifies a battle name (eg `Dirt`), which links to `battleBackgrou
 ## Pushing to web
 
 ```
-aws s3 sync build/distributions/ s3://austinkucera.com/mechamon/ --delete
+aws s3 sync build/distributions/ s3://austinkucera.com/games/mechamon/ --delete
 ```
 
 ## Credits
