@@ -2,7 +2,7 @@
 
 Collect parts to battle bots
 
-[![](example.png)](https://austinkucera.com/mechamon)
+[![](example.png)](https://austinkucera.com/games/mechamon)
 
 ## Running
 
