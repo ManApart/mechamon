@@ -21,7 +21,7 @@ import ui.play
 class TiledScene(
     private val levelName: String,
     private val player: PlayerCharacter,
-    private val playerStartTile: Point = Point(0, 0)
+    private val playerStartTile: Point
 ) : Scene() {
     var musicName: String? = null
 

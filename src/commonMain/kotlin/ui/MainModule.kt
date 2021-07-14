@@ -30,7 +30,7 @@ object MainModule : Module() {
         mapInstance("map")
         mapInstance(PlayerCharacter(Game.playerBot))
         mapInstance(Point(0,0))
-        mapInstance(BattleConfig(Battle(Bot(), Bot(), terrains["Dirt"]!!), "map", Tile(0, 0, TileType(0, "Dirt"))))
+        mapInstance(BattleConfig(Battle(Bot(), Bot(), terrains["Dirt"]!!), "map", Tile(1, 0, TileType(0, "Dirt"))))
         mapPrototype { TiledScene(get(), get(), get()) }
         mapPrototype { BattleScene(get()) }
     }

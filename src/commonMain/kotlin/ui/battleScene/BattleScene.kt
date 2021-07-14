@@ -35,7 +35,9 @@ class BattleScene(val config: BattleConfig) : Scene() {
 
 
         fixedSizeContainer(WINDOW_SIZE, WINDOW_SIZE, clip = false) {
-            screen = scaleView(WINDOW_SIZE, WINDOW_SIZE, 2.0, false)
+            screen = fixedSizeContainer(WINDOW_SIZE, WINDOW_SIZE, false) {
+                scale = 4.0
+            }
         }
 
         keys {
@@ -63,8 +65,7 @@ class BattleScene(val config: BattleConfig) : Scene() {
             sceneContainer.changeTo<TiledScene>(
                 config.level,
                 PlayerCharacter(config.battle.botA),
-                config.tile.x,
-                config.tile.y,
+                config.tile.point,
                 transition = AlphaTransition,
                 time = TimeSpan(500.0)
             )

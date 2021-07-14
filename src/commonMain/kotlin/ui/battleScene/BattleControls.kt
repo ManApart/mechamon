@@ -2,6 +2,7 @@ package ui.battleScene
 
 import com.soywiz.korev.Key
 import com.soywiz.korge.input.keys
+import com.soywiz.korge.input.onClick
 import com.soywiz.korge.view.*
 import com.soywiz.korim.color.Colors
 import ui.tiledScene.Direction
@@ -14,13 +15,13 @@ class BattleControls(
 ) : Container() {
     var selectedAction: BattleOption = determineSelectedAction(Direction.UP)
 
-    private fun determineSelectedAction(selected: Direction) : BattleOption{
-         return when (selected) {
+    private fun determineSelectedAction(selected: Direction): BattleOption {
+        return when (selected) {
             Direction.UP -> up
             Direction.DOWN -> down
             Direction.LEFT -> left
             Direction.RIGHT -> right
-         }
+        }
     }
 
     fun init() {
@@ -46,13 +47,13 @@ class BattleControls(
     }
 
     private fun draw(highlighted: Direction) {
-        createButton(60, 90, up.displayText, highlighted == Direction.UP)
-        createButton(80, 110, right.displayText, highlighted == Direction.RIGHT)
-        createButton(40, 110, left.displayText, highlighted == Direction.LEFT)
-        createButton(60, 130, down.displayText, highlighted == Direction.DOWN)
+        createButton(60, 90, up, highlighted == Direction.UP)
+        createButton(80, 110, right, highlighted == Direction.RIGHT)
+        createButton(40, 110, left, highlighted == Direction.LEFT)
+        createButton(60, 130, down, highlighted == Direction.DOWN)
     }
 
-    private fun createButton(x: Int, y: Int, displayText: String, highlighted: Boolean) {
+    private fun createButton(x: Int, y: Int, option: BattleOption, highlighted: Boolean) {
         if (highlighted) {
             roundRect(40.0, 20.0, 2.0, fill = Colors.BLACK) {
                 position(x, y)
@@ -60,8 +61,11 @@ class BattleControls(
         }
         val button = roundRect(40.0, 20.0, 5.0, fill = Colors["#b9aea0"]) {
             position(x, y)
+            onClick {
+                option.action()
+            }
         }
-        text(displayText).centerOn(button)
+        text(option.displayText).centerOn(button)
     }
 
     private fun updateChoice(highlighted: Direction) {

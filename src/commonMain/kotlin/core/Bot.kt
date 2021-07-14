@@ -1,6 +1,5 @@
 package core
 
-import data.NOTHING
 import data.arms
 import data.cores
 import data.heads
