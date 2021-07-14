@@ -41,7 +41,7 @@ class TiledScene(
                 addChild(player)
                 player.setTile(playerStartTile)
             }
-            createMouseControls(mainView)
+            createMouseControls(mainView, player)
         }
     }
 

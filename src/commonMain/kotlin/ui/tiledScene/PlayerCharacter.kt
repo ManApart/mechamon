@@ -18,6 +18,10 @@ class PlayerCharacter(private val bot: Bot) : Container() {
     private lateinit var useDoor: (Door) -> Unit
     private lateinit var startBattle: (Tile) -> Unit
     private var facing = Direction.DOWN
+    var pressedUp = false
+    var pressedDown = false
+    var pressedLeft = false
+    var pressedRight = false
 
     suspend fun init(sceneChange: (Door) -> Unit, startBattle: (Tile) -> Unit) {
         this.useDoor = sceneChange
@@ -45,7 +49,7 @@ class PlayerCharacter(private val bot: Bot) : Container() {
                 printTile()
             }
             up(Key.Z) {
-                startBattle(getTile(getSpriteAnchor())!!)
+                startABattle()
             }
         }
         addUpdaterWithViews { views: Views, dt: TimeSpan ->
@@ -56,12 +60,21 @@ class PlayerCharacter(private val bot: Bot) : Container() {
             val terrainMovement = bot.core.getMovement(startTile.type.terrain) / 200.toDouble()
             val movement = 0.5 + terrainMovement //Min speed of 0.5, max speed of 1 if you have 100% movement
 
-            if (views.input.keys[Key.RIGHT]) dx = movement * scale
-            if (views.input.keys[Key.LEFT]) dx = -movement * scale
-            if (views.input.keys[Key.UP]) dy = -movement * scale
-            if (views.input.keys[Key.DOWN]) dy = movement * scale
+            if (views.input.keys[Key.RIGHT] || pressedRight) dx = movement * scale
+            if (views.input.keys[Key.LEFT] || pressedLeft) dx = -movement * scale
+            if (views.input.keys[Key.UP] || pressedUp) dy = -movement * scale
+            if (views.input.keys[Key.DOWN] || pressedDown) dy = movement * scale
             tryMove(startTile, dx, dy)
+
+            pressedUp = false
+            pressedDown = false
+            pressedLeft = false
+            pressedRight = false
         }
+    }
+
+    fun startABattle() {
+        startBattle(getTile(getSpriteAnchor())!!)
     }
 
     private fun tryMove(startTile: Tile, xd: Double = 0.0, yd: Double = 0.0) {
@@ -113,7 +126,7 @@ class PlayerCharacter(private val bot: Bot) : Container() {
         return Game.terrain.get(x, y)
     }
 
-    private fun printTile() {
+    fun printTile() {
         val tile = getTile(getSpriteAnchor())!!
         val move = bot.core.getMovement(tile.type.terrain)
         println("Standing on $tile with movement $move")
