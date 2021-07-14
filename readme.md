@@ -1,5 +1,7 @@
 # Mechamon
 
+[![Build and Test](https://github.com/ManApart/mechamon/actions/workflows/runTests.yml/badge.svg)](https://github.com/ManApart/mechamon/actions/workflows/runTests.yml)
+
 Collect parts to battle bots
 
 [![](example.png)](https://austinkucera.com/games/mechamon)
