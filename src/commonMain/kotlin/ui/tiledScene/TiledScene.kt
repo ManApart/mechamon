@@ -1,8 +1,8 @@
 package ui.tiledScene
 
 import Game
-import MAIN_VIEW_SIZE
-import WINDOW_SIZE
+import WINDOW_HEIGHT
+import WINDOW_WIDTH
 import com.soywiz.klock.TimeSpan
 import com.soywiz.korge.scene.AlphaTransition
 import com.soywiz.korge.scene.Scene
@@ -35,13 +35,13 @@ class TiledScene(
 
         player.init(::useDoor, ::startBattle)
 
-        fixedSizeContainer(WINDOW_SIZE, MAIN_VIEW_SIZE, clip = false) {
-            val mainView = scaleView(MAIN_VIEW_SIZE/2, MAIN_VIEW_SIZE/2, 2.0, false) {
+        fixedSizeContainer(WINDOW_WIDTH, WINDOW_HEIGHT, clip = false) {
+            scaleView(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, 2.0, false) {
                 tiledMapView(tiledMap, smoothing = false)
                 addChild(player)
                 player.setTile(playerStartTile)
             }
-            createMouseControls(mainView, player)
+            createMouseControls(player)
         }
     }
 

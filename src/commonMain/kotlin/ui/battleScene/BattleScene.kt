@@ -1,6 +1,7 @@
 package ui.battleScene
 
-import MAIN_VIEW_SIZE
+import WINDOW_HEIGHT
+import WINDOW_WIDTH
 import com.soywiz.klock.TimeSpan
 import com.soywiz.korev.Key
 import com.soywiz.korge.input.keys
@@ -34,8 +35,8 @@ class BattleScene(val config: BattleConfig) : Scene() {
         val enemyCombatant = Combatant(bot, Direction.LEFT)
 
 
-        fixedSizeContainer(MAIN_VIEW_SIZE, MAIN_VIEW_SIZE, clip = false) {
-            screen = fixedSizeContainer(MAIN_VIEW_SIZE, MAIN_VIEW_SIZE, false) {
+        fixedSizeContainer(WINDOW_WIDTH, WINDOW_HEIGHT, clip = false) {
+            screen = fixedSizeContainer(WINDOW_WIDTH, WINDOW_HEIGHT, false) {
                 scale = 4.0
             }
         }

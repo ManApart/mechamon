@@ -1,8 +1,8 @@
 package ui
 
 import Game
-import MAIN_VIEW_SIZE
-import WINDOW_SIZE
+import WINDOW_HEIGHT
+import WINDOW_WIDTH
 import com.soywiz.korge.scene.Module
 import com.soywiz.korinject.AsyncInjector
 import com.soywiz.korma.geom.*
@@ -17,10 +17,10 @@ import ui.tiledScene.TileType
 import ui.tiledScene.TiledScene
 
 object MainModule : Module() {
-//    override val mainScene = BattleScene::class
-    override val mainScene = TiledScene::class
+    override val mainScene = BattleScene::class
+//    override val mainScene = TiledScene::class
     override val title: String = "Mechamon"
-    override val size: SizeInt = SizeInt(Size(MAIN_VIEW_SIZE, WINDOW_SIZE))
+    override val size: SizeInt = SizeInt(Size(WINDOW_WIDTH, WINDOW_HEIGHT))
     override val windowSize = size
     override val icon: String = "battleBackgrounds/Forest.png"
     override val scaleMode: ScaleMode = ScaleMode.NO_SCALE
