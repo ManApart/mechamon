@@ -65,7 +65,11 @@ class BattleControls(
                 option.action()
             }
         }
-        text(option.displayText).centerOn(button)
+        text(option.displayText) {
+            if (option.displayText.length > 6) {
+                scaledWidth = 38.0
+            }
+        }.centerOn(button)
     }
 
     private fun updateChoice(highlighted: Direction) {

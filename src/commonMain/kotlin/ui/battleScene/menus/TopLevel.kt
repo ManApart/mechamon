@@ -38,6 +38,7 @@ class TopLevel(
     }
 
     private fun getControls(): BattleControls {
+//        val up = BattleOption("This is a move description that is fairly long but also is informative") { parent.draw(inspectMenu) }
         val up = BattleOption("Inspect") { parent.draw(inspectMenu) }
         val right = BattleOption("Action")
         val left = BattleOption("Flee") { parent.endBattle() }
