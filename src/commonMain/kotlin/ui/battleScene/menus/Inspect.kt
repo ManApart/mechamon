@@ -2,10 +2,7 @@ package ui.battleScene.menus
 
 import com.soywiz.korge.view.*
 import com.soywiz.korim.color.Colors
-import ui.battleScene.BattleControls
-import ui.battleScene.BattleOption
-import ui.battleScene.BattleScene
-import ui.battleScene.Combatant
+import ui.battleScene.*
 
 class Inspect(
     private val parent: BattleScene,
@@ -42,10 +39,10 @@ class Inspect(
 
     private fun getControls(): BattleControls {
         val bot = combatant.bot
-        val up = BattleOption("${bot.head.health}/${bot.head.totalHealth}")
-        val right = BattleOption("${bot.armRight.health}/${bot.armRight.totalHealth}")
-        val left = BattleOption("${bot.armLeft.health}/${bot.armLeft.totalHealth}")
-        val down = BattleOption("${bot.core.health}/${bot.core.totalHealth}")
+        val up = BattleOption("${bot.head.name}\nHP: ${bot.head.health}/${bot.head.totalHealth}")
+        val right = BattleOption("${bot.armRight.name}\nHP: ${bot.armRight.health}/${bot.armRight.totalHealth}")
+        val left = BattleOption("${bot.armLeft.name}\nHP: ${bot.armLeft.health}/${bot.armLeft.totalHealth}")
+        val down = BattleOption("${bot.core.name}\nHP: ${bot.core.health}/${bot.core.totalHealth}")
         return BattleControls(up, down, left, right)
     }
 
@@ -53,7 +50,7 @@ class Inspect(
         val button = parent.screen.roundRect(40.0, 20.0, 5.0, fill = Colors["#b9aea0"]) {
             position(x, y)
         }
-        parent.screen.text(displayText).centerOn(button)
+        parent.screen.scaledText(displayText, button)
 
     }
 

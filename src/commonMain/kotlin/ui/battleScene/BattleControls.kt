@@ -3,10 +3,9 @@ package ui.battleScene
 import com.soywiz.korev.Key
 import com.soywiz.korge.input.keys
 import com.soywiz.korge.input.onClick
-import com.soywiz.korge.ui.uiText
 import com.soywiz.korge.view.*
 import com.soywiz.korim.color.Colors
-import com.soywiz.korui.UiTextField
+import com.soywiz.korim.text.TextAlignment
 import ui.tiledScene.Direction
 
 class BattleControls(
@@ -67,12 +66,8 @@ class BattleControls(
                 option.action()
             }
         }
-        text(option.displayText) {
-            if (option.displayText.length > 6) {
-                scaledWidth = 38.0
-                scaledHeight = 38.0 / unscaledWidth * unscaledHeight
-            }
-        }.centerOn(button)
+        val text = option.displayText
+        scaledText(text, button)
     }
 
     private fun updateChoice(highlighted: Direction) {
@@ -81,5 +76,20 @@ class BattleControls(
         draw(highlighted)
     }
 
+}
 
+fun Container.scaledText(text: String, centerParent: View) {
+    text(text) {
+        val w = centerParent.unscaledWidth-2
+        val h = centerParent.unscaledHeight-2
+        val scaledW = h / unscaledHeight * unscaledWidth
+        val scaledH = w / unscaledWidth * unscaledHeight
+        if (scaledW <= scaledH) {
+            scaledWidth = scaledW
+            scaledHeight = h
+        } else {
+            scaledWidth = w
+            scaledHeight = scaledH
+        }
+    }.centerOn(centerParent)
 }
