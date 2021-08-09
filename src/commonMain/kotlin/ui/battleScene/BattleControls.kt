@@ -13,7 +13,8 @@ class BattleControls(
     private val up: BattleOption,
     private val down: BattleOption,
     private val left: BattleOption,
-    private val right: BattleOption
+    private val right: BattleOption,
+    private val onHighlight: (Direction) -> Unit = {}
 ) : Container() {
     var selectedAction: BattleOption = determineSelectedAction(Direction.UP)
 
@@ -75,6 +76,7 @@ class BattleControls(
         this.selectedAction = determineSelectedAction(highlighted)
         removeChildren()
         draw(highlighted)
+        onHighlight(highlighted)
     }
 
 }

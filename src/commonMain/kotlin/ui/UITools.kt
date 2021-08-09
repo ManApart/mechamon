@@ -5,8 +5,8 @@ import com.soywiz.korim.color.Colors
 import ui.battleScene.BattleScene
 
 
-fun BattleScene.createInfo(x: Int, y: Int, displayText: String): Text {
-    val button = screen.roundRect(40.0, 20.0, 5.0, fill = Colors["#b9aea0"]) {
+fun BattleScene.createInfo(x: Int, y: Int, displayText: String, width: Int = 40, height: Int = 20): Text {
+    val button = screen.roundRect(width.toDouble(), height.toDouble(), 5.0, fill = Colors["#b9aea0"]) {
         position(x, y)
     }
     return screen.scaledText(displayText, button)
