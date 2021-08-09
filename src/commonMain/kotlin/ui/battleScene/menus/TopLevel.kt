@@ -15,6 +15,7 @@ class TopLevel(
 ) : BattleMenu {
     private var battleControls = getControls()
     private val inspectMenu by lazy { InspectWho(parent, background, playerCombatant, enemyCombatant, this) }
+    private val actionMenu by lazy { ActionMenu(parent, background, playerCombatant, this) }
 
     override suspend fun draw() {
         parent.screen.removeChildren()
@@ -39,7 +40,7 @@ class TopLevel(
 
     private fun getControls(): BattleControls {
         val up = BattleOption("Inspect") { parent.draw(inspectMenu) }
-        val right = BattleOption("Action")
+        val right = BattleOption("Action") { parent.draw(actionMenu) }
         val left = BattleOption("Flee") { parent.endBattle() }
         val down = BattleOption("Done")
         return BattleControls(up, down, left, right)

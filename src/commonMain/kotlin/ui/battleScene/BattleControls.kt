@@ -6,6 +6,7 @@ import com.soywiz.korge.input.onClick
 import com.soywiz.korge.view.*
 import com.soywiz.korim.color.Colors
 import com.soywiz.korim.text.TextAlignment
+import ui.scaledText
 import ui.tiledScene.Direction
 
 class BattleControls(
@@ -78,18 +79,3 @@ class BattleControls(
 
 }
 
-fun Container.scaledText(text: String, centerParent: View) {
-    text(text) {
-        val w = centerParent.unscaledWidth-2
-        val h = centerParent.unscaledHeight-2
-        val scaledW = h / unscaledHeight * unscaledWidth
-        val scaledH = w / unscaledWidth * unscaledHeight
-        if (scaledW <= scaledH) {
-            scaledWidth = scaledW
-            scaledHeight = h
-        } else {
-            scaledWidth = w
-            scaledHeight = scaledH
-        }
-    }.centerOn(centerParent)
-}

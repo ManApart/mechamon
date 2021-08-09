@@ -1,18 +1,18 @@
 package ui.battleScene.menus
 
 import com.soywiz.korge.view.*
-import com.soywiz.korim.color.Colors
 import ui.battleScene.*
 import ui.createInfo
-import ui.scaledText
 
-class Inspect(
+class MoveMenu(
     private val parent: BattleScene,
     private val background: Image,
     private val combatant: Combatant,
-    private val backMenu: InspectWho
+    private val backMenu: ActionMenu
 ) : BattleMenu {
     private var battleControls = getControls()
+    private lateinit var distance: Text
+    private lateinit var movePoints: Text
 
     override suspend fun draw() {
         parent.screen.removeChildren()
@@ -21,11 +21,11 @@ class Inspect(
         parent.screen.addChild(combatant)
         combatant.init()
 
-        val head = combatant.bot.head
-        parent.createInfo(50, 0, "AP: ${head.ap}/${head.totalAP}")
+        val dist = parent.config.battle.distance
+        distance = parent.createInfo(50, 0, "Distance: $dist")
         val terrain = parent.config.battle.terrain
         val totalMP = combatant.bot.core.getMovement(terrain) / 10
-        parent.createInfo(50, 20, "MP: ${combatant.bot.mp}/$totalMP")
+        movePoints = parent.createInfo(50, 20, "MP: ${combatant.bot.mp}/$totalMP")
 
         parent.screen.addChild(battleControls)
         battleControls.init()
@@ -40,12 +40,21 @@ class Inspect(
     }
 
     private fun getControls(): BattleControls {
-        val bot = combatant.bot
-        val up = BattleOption("${bot.head.name}\nHP: ${bot.head.health}/${bot.head.totalHealth}")
-        val right = BattleOption("${bot.armRight.name}\nHP: ${bot.armRight.health}/${bot.armRight.totalHealth}")
-        val left = BattleOption("${bot.armLeft.name}\nHP: ${bot.armLeft.health}/${bot.armLeft.totalHealth}")
-        val down = BattleOption("${bot.core.name}\nHP: ${bot.core.health}/${bot.core.totalHealth}")
+        val up = BattleOption("")
+        val right = BattleOption("Closer") { move(true) }
+        val left = BattleOption("Further")
+        val down = BattleOption("Back") { parent.draw(backMenu) }
         return BattleControls(up, down, left, right)
+    }
+
+    private fun move(closer: Boolean) {
+        val amount = if (closer) -1 else 1
+        parent.config.battle.move(combatant.bot, amount)
+        distance.text = "Distance: ${parent.config.battle.distance}"
+
+        val terrain = parent.config.battle.terrain
+        val totalMP = combatant.bot.core.getMovement(terrain) / 10
+        movePoints.text = "MP: ${combatant.bot.mp}/$totalMP"
     }
 
 }

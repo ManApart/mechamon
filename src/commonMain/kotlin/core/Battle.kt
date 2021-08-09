@@ -1,5 +1,7 @@
 package core
 
+import kotlin.math.abs
+
 class Battle(val botA: Bot, val botB: Bot, val terrain: Terrain) {
     var distance = 10
 
@@ -18,5 +20,18 @@ class Battle(val botA: Bot, val botB: Bot, val terrain: Terrain) {
     fun tick() {
         botA.mp = botA.core.getMovement(terrain) / 10
         botB.mp = botB.core.getMovement(terrain) / 10
+    }
+
+    fun move(bot: Bot, amount: Int) {
+        if (bot.mp > 0){
+            if (distance + amount > 0){
+                bot.mp -= abs(amount)
+                distance += amount
+            } else {
+                println("Can't get closer!")
+            }
+        } else {
+            println("Bot has no MP!")
+        }
     }
 }

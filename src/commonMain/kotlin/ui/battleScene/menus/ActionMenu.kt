@@ -6,13 +6,15 @@ import ui.battleScene.*
 import ui.createInfo
 import ui.scaledText
 
-class Inspect(
+class ActionMenu(
     private val parent: BattleScene,
     private val background: Image,
     private val combatant: Combatant,
-    private val backMenu: InspectWho
+    private val backMenu: TopLevel
 ) : BattleMenu {
     private var battleControls = getControls()
+
+    private val actionMenu by lazy { MoveMenu(parent, background, combatant, this) }
 
     override suspend fun draw() {
         parent.screen.removeChildren()
@@ -20,12 +22,6 @@ class Inspect(
         background.addTo(parent.screen)
         parent.screen.addChild(combatant)
         combatant.init()
-
-        val head = combatant.bot.head
-        parent.createInfo(50, 0, "AP: ${head.ap}/${head.totalAP}")
-        val terrain = parent.config.battle.terrain
-        val totalMP = combatant.bot.core.getMovement(terrain) / 10
-        parent.createInfo(50, 20, "MP: ${combatant.bot.mp}/$totalMP")
 
         parent.screen.addChild(battleControls)
         battleControls.init()
@@ -41,10 +37,10 @@ class Inspect(
 
     private fun getControls(): BattleControls {
         val bot = combatant.bot
-        val up = BattleOption("${bot.head.name}\nHP: ${bot.head.health}/${bot.head.totalHealth}")
-        val right = BattleOption("${bot.armRight.name}\nHP: ${bot.armRight.health}/${bot.armRight.totalHealth}")
-        val left = BattleOption("${bot.armLeft.name}\nHP: ${bot.armLeft.health}/${bot.armLeft.totalHealth}")
-        val down = BattleOption("${bot.core.name}\nHP: ${bot.core.health}/${bot.core.totalHealth}")
+        val up = BattleOption(bot.head.action.name)
+        val right = BattleOption(bot.armRight.action.name)
+        val left = BattleOption(bot.armLeft.action.name)
+        val down = BattleOption("Move") { parent.draw(actionMenu) }
         return BattleControls(up, down, left, right)
     }
 
