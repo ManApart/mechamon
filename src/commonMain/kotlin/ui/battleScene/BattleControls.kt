@@ -2,11 +2,9 @@ package ui.battleScene
 
 import com.soywiz.korev.Key
 import com.soywiz.korge.input.keys
-import com.soywiz.korge.input.onClick
 import com.soywiz.korge.view.*
 import com.soywiz.korim.color.Colors
-import com.soywiz.korim.text.TextAlignment
-import ui.scaledText
+import ui.Button
 import ui.tiledScene.Direction
 
 class BattleControls(
@@ -62,14 +60,9 @@ class BattleControls(
                 position(x, y)
             }
         }
-        val button = roundRect(40.0, 20.0, 5.0, fill = Colors["#b9aea0"]) {
-            position(x, y)
-            onClick {
-                option.action()
-            }
+        Button(this, x, y, option.displayText) {
+            option.action()
         }
-        val text = option.displayText
-        scaledText(text, button)
     }
 
     private fun updateChoice(highlighted: Direction) {

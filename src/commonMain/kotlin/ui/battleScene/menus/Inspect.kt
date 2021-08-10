@@ -1,10 +1,8 @@
 package ui.battleScene.menus
 
 import com.soywiz.korge.view.*
-import com.soywiz.korim.color.Colors
+import ui.Button
 import ui.battleScene.*
-import ui.createInfo
-import ui.scaledText
 import ui.tiledScene.Direction
 
 class Inspect(
@@ -14,7 +12,7 @@ class Inspect(
     private val backMenu: InspectWho
 ) : BattleMenu {
     private var battleControls = getControls()
-    private lateinit var description: Text
+    private lateinit var description: Button
 
     override suspend fun draw() {
         parent.screen.removeChildren()
@@ -24,12 +22,12 @@ class Inspect(
         combatant.init()
 
         val head = combatant.bot.head
-        parent.createInfo(0, 0, "AP: ${head.ap}/${head.totalAP}")
+        Button(parent.screen, 0,0, "AP: ${head.ap}/${head.totalAP}")
         val terrain = parent.config.battle.terrain
         val totalMP = combatant.bot.core.getMovement(terrain) / 10
-        parent.createInfo(background.width.toInt()- 40, 0, "MP: ${combatant.bot.mp}/$totalMP")
+        Button(parent.screen, background.width.toInt()- 40,0, "MP: ${combatant.bot.mp}/$totalMP")
 
-        description = parent.createInfo(20, 30, head.description, 120, 40)
+        description =  Button(parent.screen, 20, 30, head.description, 120, 40)
 
         parent.screen.addChild(battleControls)
         battleControls.init()
@@ -53,7 +51,7 @@ class Inspect(
     }
 
     private fun updateDescription(direction: Direction) {
-        description.text = combatant.bot.getPart(direction).description
+        description.updateText(combatant.bot.getPart(direction).description)
     }
 
 }

@@ -1,8 +1,8 @@
 package ui.battleScene.menus
 
 import com.soywiz.korge.view.*
+import ui.Button
 import ui.battleScene.*
-import ui.createInfo
 
 class MoveMenu(
     private val parent: BattleScene,
@@ -11,8 +11,8 @@ class MoveMenu(
     private val backMenu: ActionMenu
 ) : BattleMenu {
     private var battleControls = getControls()
-    private lateinit var distance: Text
-    private lateinit var movePoints: Text
+    private lateinit var distance: Button
+    private lateinit var movePoints: Button
 
     override suspend fun draw() {
         parent.screen.removeChildren()
@@ -22,10 +22,10 @@ class MoveMenu(
         combatant.init()
 
         val dist = parent.config.battle.distance
-        distance = parent.createInfo(50, 0, "Distance: $dist")
+        distance = Button(parent.screen, 50, 0, "Distance: $dist")
         val terrain = parent.config.battle.terrain
         val totalMP = combatant.bot.core.getMovement(terrain) / 10
-        movePoints = parent.createInfo(50, 20, "MP: ${combatant.bot.mp}/$totalMP")
+        movePoints = Button(parent.screen, 50, 20, "MP: ${combatant.bot.mp}/$totalMP")
 
         parent.screen.addChild(battleControls)
         battleControls.init()
@@ -42,7 +42,7 @@ class MoveMenu(
     private fun getControls(): BattleControls {
         val up = BattleOption("")
         val right = BattleOption("Closer") { move(true) }
-        val left = BattleOption("Further")
+        val left = BattleOption("Further") { move(false) }
         val down = BattleOption("Back") { parent.draw(backMenu) }
         return BattleControls(up, down, left, right)
     }
@@ -50,11 +50,11 @@ class MoveMenu(
     private fun move(closer: Boolean) {
         val amount = if (closer) -1 else 1
         parent.config.battle.move(combatant.bot, amount)
-        distance.text = "Distance: ${parent.config.battle.distance}"
+        distance.updateText("Distance: ${parent.config.battle.distance}")
 
         val terrain = parent.config.battle.terrain
         val totalMP = combatant.bot.core.getMovement(terrain) / 10
-        movePoints.text = "MP: ${combatant.bot.mp}/$totalMP"
+        movePoints.updateText("MP: ${combatant.bot.mp}/$totalMP")
     }
 
 }
