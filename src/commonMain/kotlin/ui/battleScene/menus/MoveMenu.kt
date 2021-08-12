@@ -3,11 +3,13 @@ package ui.battleScene.menus
 import com.soywiz.korge.view.*
 import ui.Button
 import ui.battleScene.*
+import kotlin.math.abs
 
 class MoveMenu(
     private val parent: BattleScene,
     private val background: Image,
-    private val combatant: Combatant,
+    private val playerCombatant: Combatant,
+    private val enemyCombatant: Combatant,
     private val backMenu: ActionMenu
 ) : BattleMenu {
     private var battleControls = getControls()
@@ -18,14 +20,14 @@ class MoveMenu(
         parent.screen.removeChildren()
 
         background.addTo(parent.screen)
-        parent.screen.addChild(combatant)
-        combatant.init()
+        parent.screen.addChild(playerCombatant)
+        parent.screen.addChild(enemyCombatant)
 
         val dist = parent.config.battle.distance
         distance = Button(parent.screen, 50, 0, "Distance: $dist")
         val terrain = parent.config.battle.terrain
-        val totalMP = combatant.bot.core.getMovement(terrain) / 10
-        movePoints = Button(parent.screen, 50, 20, "MP: ${combatant.bot.mp}/$totalMP")
+        val totalMP = playerCombatant.bot.core.getMovement(terrain) / 10
+        movePoints = Button(parent.screen, 50, 20, "MP: ${playerCombatant.bot.mp}/$totalMP")
 
         parent.screen.addChild(battleControls)
         battleControls.init()
@@ -48,13 +50,37 @@ class MoveMenu(
     }
 
     private fun move(closer: Boolean) {
-        val amount = if (closer) -1 else 1
-        parent.config.battle.move(combatant.bot, amount)
-        distance.updateText("Distance: ${parent.config.battle.distance}")
+        val amount = if (closer) 1 else -1
+        parent.config.battle.move(playerCombatant.bot, amount)
+        val dist = parent.config.battle.distance
+        distance.updateText("Distance: $dist")
 
         val terrain = parent.config.battle.terrain
-        val totalMP = combatant.bot.core.getMovement(terrain) / 10
-        movePoints.updateText("MP: ${combatant.bot.mp}/$totalMP")
+        val totalMP = playerCombatant.bot.core.getMovement(terrain) / 10
+        movePoints.updateText("MP: ${playerCombatant.bot.mp}/$totalMP")
+
+        if (dist > 1) {
+            when{
+                amount > 0 && abs(playerCombatant.position - enemyCombatant.position) > 2 -> {
+                    playerCombatant.position += amount
+                    playerCombatant.drawAtPosition()
+                }
+                amount > 0 && enemyCombatant.position < 10 -> {
+                    enemyCombatant.position += amount
+                    enemyCombatant.drawAtPosition()
+                }
+                amount < 0 && playerCombatant.position > 0 -> {
+                    playerCombatant.position += amount
+                    playerCombatant.drawAtPosition()
+                }
+                amount < 0 && enemyCombatant.position < 10 -> {
+                    enemyCombatant.position -= amount
+                    enemyCombatant.drawAtPosition()
+                }
+            }
+
+//        enemyCombatant.drawAtPosition(dist)
+        }
     }
 
 }

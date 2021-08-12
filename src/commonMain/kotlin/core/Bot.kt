@@ -36,7 +36,7 @@ class Bot(
         }
 
         val enemy = battle.getOpponent(this)
-        
+
 
         return "Done!"
     }

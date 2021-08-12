@@ -15,7 +15,7 @@ class TopLevel(
 ) : BattleMenu {
     private var battleControls = getControls()
     private val inspectMenu by lazy { InspectWho(parent, background, playerCombatant, enemyCombatant, this) }
-    private val actionMenu by lazy { ActionMenu(parent, background, playerCombatant, this) }
+    private val actionMenu by lazy { ActionMenu(parent, background, playerCombatant, enemyCombatant, this) }
 
     override suspend fun draw() {
         parent.screen.removeChildren()
