@@ -7,7 +7,12 @@ import core.Bot
 import ui.Resources
 import ui.tiledScene.Direction
 
-class Combatant(val bot: Bot, private val facing: Direction, private val backgroundWidth: Double, private val battle: Battle) : Container() {
+class Combatant(
+    val bot: Bot,
+    private val facing: Direction,
+    private val backgroundWidth: Double,
+    private val battle: Battle
+) : Container() {
     private lateinit var sprite: Sprite
     var position = if (facing == Direction.RIGHT) 0 else 10
 
@@ -23,14 +28,12 @@ class Combatant(val bot: Bot, private val facing: Direction, private val backgro
         this.sprite = sprite(anim)
         this.sprite.smoothing = false
         sprite.playAnimationLooped(anim, spriteDisplayTime = TimeSpan(200.0))
-        drawAtPosition()
+        redraw()
     }
 
-    //0 - 10
-    fun drawAtPosition() {
-        val adjustment = backgroundWidth / 10.toDouble() * position
-        val x = if (facing == Direction.RIGHT) adjustment else adjustment - sprite.width
-        sprite.xy(x.toInt(), 40)
+    fun redraw() {
+        val adjustment = (backgroundWidth - sprite.width*2) / 10.toDouble() * position + sprite.width / 2
+        xy(adjustment.toInt(), 40)
     }
 
 

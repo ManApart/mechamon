@@ -25,11 +25,11 @@ class Battle(val botA: Bot, val botB: Bot, val terrain: Terrain) {
     fun move(bot: Bot, amount: Int) {
         if (true){
 //        if (bot.mp > 0){
-            if (distance + amount > 0){
+            if (distance + amount in 1..10){
                 bot.mp -= abs(amount)
                 distance += amount
             } else {
-                println("Can't get closer!")
+                println("Can't get move more in that direction!")
             }
         } else {
             println("Bot has no MP!")

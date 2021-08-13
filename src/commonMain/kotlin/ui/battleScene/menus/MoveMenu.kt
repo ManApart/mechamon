@@ -51,7 +51,7 @@ class MoveMenu(
 
     private fun move(closer: Boolean) {
         val amount = if (closer) 1 else -1
-        parent.config.battle.move(playerCombatant.bot, amount)
+        parent.config.battle.move(playerCombatant.bot, -amount)
         val dist = parent.config.battle.distance
         distance.updateText("Distance: $dist")
 
@@ -59,27 +59,26 @@ class MoveMenu(
         val totalMP = playerCombatant.bot.core.getMovement(terrain) / 10
         movePoints.updateText("MP: ${playerCombatant.bot.mp}/$totalMP")
 
-        if (dist > 1) {
+        if (dist in 1..10) {
             when{
-                amount > 0 && abs(playerCombatant.position - enemyCombatant.position) > 2 -> {
+                amount > 0 && abs(playerCombatant.position - enemyCombatant.position) > 1 -> {
                     playerCombatant.position += amount
-                    playerCombatant.drawAtPosition()
+                    playerCombatant.redraw()
                 }
                 amount > 0 && enemyCombatant.position < 10 -> {
                     enemyCombatant.position += amount
-                    enemyCombatant.drawAtPosition()
+                    enemyCombatant.redraw()
                 }
                 amount < 0 && playerCombatant.position > 0 -> {
                     playerCombatant.position += amount
-                    playerCombatant.drawAtPosition()
+                    playerCombatant.redraw()
                 }
                 amount < 0 && enemyCombatant.position < 10 -> {
                     enemyCombatant.position -= amount
-                    enemyCombatant.drawAtPosition()
+                    enemyCombatant.redraw()
                 }
             }
 
-//        enemyCombatant.drawAtPosition(dist)
         }
     }
 
