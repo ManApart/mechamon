@@ -1,6 +1,7 @@
 package core
 
 import core.actions.Action
+import core.actions.ActionResult
 import data.arms
 import data.cores
 import data.heads
@@ -23,21 +24,20 @@ class Bot(
         }
     }
 
-    fun takeAction(action: Action, target: Part, battle: Battle): String {
-        if (action.cost > head.ap){
-            return "Not enough AP!"
+    fun takeAction(action: Action, target: Part, battle: Battle): ActionResult {
+        if (action.cost > head.ap) {
+            return ActionResult.LOW_AP
         }
 
         println("Player does ${action.name}")
         head.ap -= action.cost
 
-        if (!action.range.contains(battle.distance)){
-            return "Player misses!"
+        if (!action.range.contains(battle.distance)) {
+            return ActionResult.MISS
         }
 
-        val enemy = battle.getOpponent(this)
+        action.use(this, target, battle)
 
-
-        return "Done!"
+        return action.type
     }
 }

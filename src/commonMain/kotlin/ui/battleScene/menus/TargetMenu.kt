@@ -51,10 +51,8 @@ class TargetMenu(
         return BattleControls(up, down, left, right)
     }
 
-
     private fun doMove(action: Action, target: Part) {
         val battle = parent.config.battle
-
         val result = playerCombatant.bot.takeAction(action, target, battle)
 
         val head = playerCombatant.bot.head

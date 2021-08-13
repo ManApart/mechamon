@@ -27,6 +27,8 @@ class ActionMenu(
         background.addTo(parent.screen)
         parent.screen.addChild(playerCombatant)
         parent.screen.addChild(enemyCombatant)
+        playerCombatant.redraw()
+        enemyCombatant.redraw()
 
         val head = playerCombatant.bot.head
         apInfo = Button(parent.screen, 0, 0, "AP: ${head.ap}/${head.totalAP}")
