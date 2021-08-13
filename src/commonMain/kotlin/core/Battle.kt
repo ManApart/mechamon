@@ -23,8 +23,7 @@ class Battle(val botA: Bot, val botB: Bot, val terrain: Terrain) {
     }
 
     fun move(bot: Bot, amount: Int) {
-        if (true){
-//        if (bot.mp > 0){
+        if (Game.ignoreMP || bot.mp > 0){
             if (distance + amount in 1..10){
                 bot.mp -= abs(amount)
                 distance += amount
