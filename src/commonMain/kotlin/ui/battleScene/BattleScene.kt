@@ -31,8 +31,8 @@ class BattleScene(val config: BattleConfig) : Scene() {
         val battle = config.battle
         val bot = battle.botA
 
-        val playerCombatant = Combatant(bot, Direction.RIGHT, background.scaledWidth, config.battle)
-        val enemyCombatant = Combatant(bot, Direction.LEFT, background.scaledWidth, config.battle)
+        val playerCombatant = Combatant(bot, Direction.RIGHT, background.scaledWidth)
+        val enemyCombatant = Combatant(bot, Direction.LEFT, background.scaledWidth)
 
 
         fixedSizeContainer(WINDOW_WIDTH, WINDOW_HEIGHT, clip = false) {

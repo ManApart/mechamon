@@ -23,7 +23,7 @@ class Bot(
         }
     }
 
-    fun takeAction(action: Action, battle: Battle): String {
+    fun takeAction(action: Action, target: Part, battle: Battle): String {
         if (action.cost > head.ap){
             return "Not enough AP!"
         }

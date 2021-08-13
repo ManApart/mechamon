@@ -14,8 +14,7 @@ import ui.tiledScene.Direction
 class Combatant(
     val bot: Bot,
     private val facing: Direction,
-    private val backgroundWidth: Double,
-    private val battle: Battle
+    private val backgroundWidth: Double
 ) : Container() {
     private lateinit var sprite: Sprite
     private lateinit var headLabel: UIText

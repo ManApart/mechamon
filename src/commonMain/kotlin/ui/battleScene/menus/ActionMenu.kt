@@ -19,7 +19,7 @@ class ActionMenu(
     private var battleControls = getControls()
     private lateinit var apInfo: Button
 
-    private val actionMenu by lazy { MoveMenu(parent, background, playerCombatant, enemyCombatant, this) }
+    private val moveMenu by lazy { MoveMenu(parent, background, playerCombatant, enemyCombatant, this) }
 
     override suspend fun draw() {
         parent.screen.removeChildren()
@@ -29,7 +29,7 @@ class ActionMenu(
         parent.screen.addChild(enemyCombatant)
 
         val head = playerCombatant.bot.head
-        apInfo = Button(parent.screen, 0,0, "AP: ${head.ap}/${head.totalAP}")
+        apInfo = Button(parent.screen, 0, 0, "AP: ${head.ap}/${head.totalAP}")
 
         parent.screen.addChild(battleControls)
         battleControls.init()
@@ -45,22 +45,16 @@ class ActionMenu(
 
     private fun getControls(): BattleControls {
         val bot = playerCombatant.bot
-        val up = BattleOption(bot.head.action.name) { doMove(bot.head.action) }
-        val right = BattleOption(bot.armRight.action.name) { doMove(bot.armRight.action) }
-        val left = BattleOption(bot.armLeft.action.name) { doMove(bot.armLeft.action) }
-        val down = BattleOption("Move") { parent.draw(actionMenu) }
+        val up = BattleOption(bot.head.action.name) { pickTarget(bot.head.action) }
+        val right = BattleOption(bot.armRight.action.name) { pickTarget(bot.armRight.action) }
+        val left = BattleOption(bot.armLeft.action.name) { pickTarget(bot.armLeft.action) }
+        val down = BattleOption("Move") { parent.draw(moveMenu) }
         return BattleControls(up, down, left, right)
     }
 
-    private fun doMove(action: Action) {
-        val battle = parent.config.battle
-
-        val result = playerCombatant.bot.takeAction(action, battle)
-
-        val head = playerCombatant.bot.head
-        apInfo.updateText("AP: ${head.ap}/${head.totalAP}")
-        println(result)
-
+    private fun pickTarget(action: Action) {
+        val menu = TargetMenu(parent, background, playerCombatant, enemyCombatant, this, action)
+            parent.draw(menu)
     }
 
 }
