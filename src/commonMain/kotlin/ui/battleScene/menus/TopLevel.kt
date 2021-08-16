@@ -7,11 +7,10 @@ import ui.battleScene.BattleScene
 
 class TopLevel(
     private val parent: BattleScene,
-    private val background: Image
 ) : BattleMenu {
     private var battleControls = getControls()
-    private val inspectMenu by lazy { InspectWho(parent, background, this) }
-    private val actionMenu by lazy { ActionMenu(parent, background, this) }
+    private val inspectMenu by lazy { InspectWho(parent,  this) }
+    private val actionMenu by lazy { ActionMenu(parent,  this) }
 
     override suspend fun draw() {
         parent.drawBase(battleControls)

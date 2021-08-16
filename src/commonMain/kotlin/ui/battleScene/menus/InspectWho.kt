@@ -9,12 +9,11 @@ import ui.battleScene.Combatant
 
 class InspectWho(
     private val parent: BattleScene,
-    private val background: Image,
     private val backMenu: TopLevel
 ) : BattleMenu {
     private var battleControls = getControls()
-    private val inspectSelfMenu by lazy { Inspect(parent, background, parent.playerCombatant, this) }
-    private val inspectThemMenu by lazy { Inspect(parent, background, parent.enemyCombatant, this) }
+    private val inspectSelfMenu by lazy { Inspect(parent, parent.playerCombatant, this) }
+    private val inspectThemMenu by lazy { Inspect(parent, parent.enemyCombatant, this) }
 
     override suspend fun draw() {
         parent.drawBase(battleControls)

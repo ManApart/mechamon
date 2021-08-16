@@ -52,6 +52,7 @@ class BattleControls(
         createButton(80, 110, right, highlighted == Direction.RIGHT)
         createButton(40, 110, left, highlighted == Direction.LEFT)
         createButton(60, 130, down, highlighted == Direction.DOWN)
+        centerOn(parent!!)
     }
 
     private fun createButton(x: Int, y: Int, option: BattleOption, highlighted: Boolean) {

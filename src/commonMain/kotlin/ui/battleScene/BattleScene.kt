@@ -8,6 +8,7 @@ import com.soywiz.korge.input.keys
 import com.soywiz.korge.scene.AlphaTransition
 import com.soywiz.korge.scene.Scene
 import com.soywiz.korge.view.*
+import com.soywiz.korim.color.Colors
 import com.soywiz.korio.async.launchImmediately
 import ui.Resources
 import ui.battleScene.menus.BattleMenu
@@ -24,7 +25,7 @@ class BattleScene(val config: BattleConfig) : Scene() {
     private lateinit var activeMenu: BattleMenu
     lateinit var playerCombatant: Combatant
     lateinit var enemyCombatant: Combatant
-    private lateinit var background: Image
+    lateinit var background: Image
 
     override suspend fun Container.sceneInit() {
         config.battle.tick()
@@ -35,8 +36,14 @@ class BattleScene(val config: BattleConfig) : Scene() {
         val bot = battle.botA
 
         fixedSizeContainer(WINDOW_WIDTH, WINDOW_HEIGHT, clip = false) {
+            solidRect(this.width, this.height, Colors.SLATEGRAY)
+            controlsArea = fixedSizeContainer(300, WINDOW_HEIGHT, true)
             battleArea = fixedSizeContainer(160, 160, true) {
-                scale = 4.0
+                scale = 6.0
+                alignLeftToRightOf(controlsArea)
+            }
+            infoArea = fixedSizeContainer(160, WINDOW_HEIGHT, true) {
+                alignLeftToRightOf(battleArea)
             }
         }
 
@@ -54,21 +61,29 @@ class BattleScene(val config: BattleConfig) : Scene() {
             }
         }
 
-        draw(TopLevel(this@BattleScene, background))
+        draw(TopLevel(this@BattleScene))
 
     }
 
     fun drawBase(battleControls: BattleControls) {
-        battleArea.removeChildren()
+        with(controlsArea) {
+            controlsArea.removeChildren()
+            addChild(battleControls)
+            battleControls.init()
+        }
 
-        background.addTo(battleArea)
-        battleArea.addChild(playerCombatant)
-        battleArea.addChild(enemyCombatant)
-        playerCombatant.redraw()
-        enemyCombatant.redraw()
+        with(battleArea) {
+            removeChildren()
+            addChild(background)
+            addChild(playerCombatant)
+            addChild(enemyCombatant)
+            playerCombatant.redraw()
+            enemyCombatant.redraw()
+        }
 
-        battleArea.addChild(battleControls)
-        battleControls.init()
+        with(infoArea){
+            removeChildren()
+        }
     }
 
     fun draw(menu: BattleMenu) {

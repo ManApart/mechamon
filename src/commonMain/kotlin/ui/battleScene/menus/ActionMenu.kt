@@ -9,7 +9,6 @@ import ui.battleScene.BattleScene
 
 class ActionMenu(
     private val parent: BattleScene,
-    private val background: Image,
     private val backMenu: TopLevel
 ) : BattleMenu {
     private var battleControls = getControls()
@@ -42,7 +41,7 @@ class ActionMenu(
     }
 
     private fun pickTarget(action: Action) {
-        val menu = TargetMenu(parent, background, this, action)
+        val menu = TargetMenu(parent, parent.background, this, action)
         parent.draw(menu)
     }
 

@@ -7,7 +7,6 @@ import ui.tiledScene.Direction
 
 class Inspect(
     private val parent: BattleScene,
-    private val background: Image,
     private val combatant: Combatant,
     private val backMenu: InspectWho
 ) : BattleMenu {
@@ -17,7 +16,7 @@ class Inspect(
     override suspend fun draw() {
         parent.battleArea.removeChildren()
 
-        background.addTo(parent.battleArea)
+        parent.background.addTo(parent.battleArea)
         parent.battleArea.addChild(combatant)
         combatant.init()
 
@@ -25,7 +24,7 @@ class Inspect(
         Button(parent.battleArea, 0,0, "AP: ${head.ap}/${head.totalAP}")
         val terrain = parent.config.battle.terrain
         val totalMP = combatant.bot.core.getMovement(terrain) / 10
-        Button(parent.battleArea, background.width.toInt()- 40,0, "MP: ${combatant.bot.mp}/$totalMP")
+        Button(parent.battleArea, parent.background.width.toInt()- 40,0, "MP: ${combatant.bot.mp}/$totalMP")
 
         description =  Button(parent.battleArea, 20, 30, head.description, 120, 40)
 
