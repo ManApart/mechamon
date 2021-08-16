@@ -5,6 +5,8 @@ import com.soywiz.korge.input.keys
 import com.soywiz.korge.view.*
 import com.soywiz.korim.color.Colors
 import ui.Button
+import ui.buttonHeight
+import ui.buttonWidth
 import ui.tiledScene.Direction
 
 class BattleControls(
@@ -48,16 +50,16 @@ class BattleControls(
     }
 
     private fun draw(highlighted: Direction) {
-        createButton(60, 90, up, highlighted == Direction.UP)
-        createButton(80, 110, right, highlighted == Direction.RIGHT)
-        createButton(40, 110, left, highlighted == Direction.LEFT)
-        createButton(60, 130, down, highlighted == Direction.DOWN)
+        createButton(buttonWidth * 1.5, buttonHeight * 4.5, up, highlighted == Direction.UP)
+        createButton(buttonWidth * 2.1, buttonHeight * 5.5, right, highlighted == Direction.RIGHT)
+        createButton(buttonWidth * .9, buttonHeight * 5.5, left, highlighted == Direction.LEFT)
+        createButton(buttonWidth * 1.5, buttonHeight * 6.5, down, highlighted == Direction.DOWN)
         centerOn(parent!!)
     }
 
-    private fun createButton(x: Int, y: Int, option: BattleOption, highlighted: Boolean) {
+    private fun createButton(x: Double, y: Double, option: BattleOption, highlighted: Boolean) {
         if (highlighted) {
-            roundRect(40.0, 20.0, 2.0, fill = Colors.BLACK) {
+            roundRect(buttonWidth, buttonHeight, buttonHeight / 10, fill = Colors.BLACK) {
                 position(x, y)
             }
         }

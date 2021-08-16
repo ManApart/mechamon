@@ -4,16 +4,29 @@ import com.soywiz.korge.input.onClick
 import com.soywiz.korge.view.*
 import com.soywiz.korim.color.Colors
 
+const val buttonWidth = 40.0 * 3
+const val buttonHeight = 20.0 * 3
+
 class Button(
     parent: Container,
-    x: Int,
-    y: Int,
+    x: Double,
+    y: Double,
     displayText: String,
-    width: Int = 40,
-    height: Int = 20,
+    width: Double = buttonWidth,
+    height: Double = buttonHeight,
     val onButtonClick: () -> Unit = {}
 ) {
-    private val button = parent.roundRect(width.toDouble(), height.toDouble(), 5.0, fill = Colors["#b9aea0"]) {
+    constructor(
+        parent: Container,
+        x: Int,
+        y: Int,
+        displayText: String,
+        width: Int = buttonWidth.toInt(),
+        height: Int = buttonHeight.toInt(),
+        onButtonClick: () -> Unit = {}
+    ) : this(parent, x.toDouble(), y.toDouble(), displayText, width.toDouble(), height.toDouble(), onButtonClick)
+
+    private val button = parent.roundRect(width, height, width/5, fill = Colors["#b9aea0"]) {
         position(x, y)
         onClick { onButtonClick() }
     }
