@@ -9,6 +9,7 @@ import com.soywiz.korge.scene.AlphaTransition
 import com.soywiz.korge.scene.Scene
 import com.soywiz.korge.view.*
 import com.soywiz.korio.async.launchImmediately
+import ui.Button
 import ui.Resources
 import ui.battleScene.menus.BattleMenu
 import ui.battleScene.menus.TopLevel
@@ -23,17 +24,20 @@ class BattleScene(val config: BattleConfig) : Scene() {
     var activeMenu: BattleMenu by Delegates.notNull()
     lateinit var playerCombatant: Combatant
     lateinit var enemyCombatant: Combatant
+    private lateinit var background: Image
 
     override suspend fun Container.sceneInit() {
         config.battle.tick()
         val backgroundPic = Resources.getImage("battleBackgrounds/${config.battle.terrain.battleName}.png")
-        val background = Image(backgroundPic, 0.0, 0.0, smoothing = false)
+        background = Image(backgroundPic, 0.0, 0.0, smoothing = false)
         play(coroutineContext, "music/battle/${config.musicName}.mp3")
         val battle = config.battle
         val bot = battle.botA
 
         playerCombatant = Combatant(bot, Direction.RIGHT, background.scaledWidth)
         enemyCombatant = Combatant(bot, Direction.LEFT, background.scaledWidth)
+        playerCombatant.init()
+        enemyCombatant.init()
 
 
         fixedSizeContainer(WINDOW_WIDTH, WINDOW_HEIGHT, clip = false) {
@@ -53,6 +57,19 @@ class BattleScene(val config: BattleConfig) : Scene() {
 
         draw(TopLevel(this@BattleScene, background))
 
+    }
+
+    fun drawBase(battleControls: BattleControls) {
+        screen.removeChildren()
+
+        background.addTo(screen)
+        screen.addChild(playerCombatant)
+        screen.addChild(enemyCombatant)
+        playerCombatant.redraw()
+        enemyCombatant.redraw()
+
+        screen.addChild(battleControls)
+        battleControls.init()
     }
 
     fun draw(menu: BattleMenu) {

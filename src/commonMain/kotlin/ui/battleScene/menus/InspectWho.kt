@@ -17,16 +17,7 @@ class InspectWho(
     private val inspectThemMenu by lazy { Inspect(parent, background, parent.enemyCombatant, this) }
 
     override suspend fun draw() {
-        parent.screen.removeChildren()
-        background.addTo(parent.screen)
-        parent.screen.addChild(parent.playerCombatant)
-        parent.playerCombatant.init()
-
-        parent.screen.addChild(parent.enemyCombatant)
-        parent.enemyCombatant.init()
-
-        parent.screen.addChild(battleControls)
-        battleControls.init()
+        parent.drawBase(battleControls)
     }
 
     override suspend fun onAccept() {

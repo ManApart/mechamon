@@ -16,20 +16,13 @@ class TargetMenu(
     private lateinit var apInfo: Button
 
     override suspend fun draw() {
-        parent.screen.removeChildren()
-
-        background.addTo(parent.screen)
-        parent.screen.addChild(parent.playerCombatant)
-        parent.screen.addChild(parent.enemyCombatant)
+        parent.drawBase(battleControls)
 
         val head = parent.playerCombatant.bot.head
         apInfo = Button(parent.screen, 0, 0, "AP: ${head.ap}/${head.totalAP}")
         val terrain = parent.config.battle.terrain
         val totalMP = parent.playerCombatant.bot.core.getMovement(terrain) / 10
         Button(parent.screen, background.width.toInt() - 40, 0, "MP: ${parent.playerCombatant.bot.mp}/$totalMP")
-
-        parent.screen.addChild(battleControls)
-        battleControls.init()
     }
 
     override suspend fun onAccept() {

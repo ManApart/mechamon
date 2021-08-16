@@ -1,13 +1,11 @@
 package ui.battleScene.menus
 
 import com.soywiz.korge.view.Image
-import com.soywiz.korge.view.addTo
 import core.actions.Action
 import ui.Button
 import ui.battleScene.BattleControls
 import ui.battleScene.BattleOption
 import ui.battleScene.BattleScene
-import ui.battleScene.Combatant
 
 class ActionMenu(
     private val parent: BattleScene,
@@ -17,22 +15,13 @@ class ActionMenu(
     private var battleControls = getControls()
     private lateinit var apInfo: Button
 
-    private val moveMenu by lazy { MoveMenu(parent, background, this) }
+    private val moveMenu by lazy { MoveMenu(parent, this) }
 
     override suspend fun draw() {
-        parent.screen.removeChildren()
-
-        background.addTo(parent.screen)
-        parent.screen.addChild(parent.playerCombatant)
-        parent.screen.addChild(parent.enemyCombatant)
-        parent.playerCombatant.redraw()
-        parent.enemyCombatant.redraw()
+        parent.drawBase(battleControls)
 
         val head = parent.playerCombatant.bot.head
         apInfo = Button(parent.screen, 0, 0, "AP: ${head.ap}/${head.totalAP}")
-
-        parent.screen.addChild(battleControls)
-        battleControls.init()
     }
 
     override suspend fun onAccept() {

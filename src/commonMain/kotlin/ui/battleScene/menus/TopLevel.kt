@@ -5,7 +5,6 @@ import com.soywiz.korge.view.addTo
 import ui.battleScene.BattleControls
 import ui.battleScene.BattleOption
 import ui.battleScene.BattleScene
-import ui.battleScene.Combatant
 
 class TopLevel(
     private val parent: BattleScene,
@@ -16,16 +15,7 @@ class TopLevel(
     private val actionMenu by lazy { ActionMenu(parent, background, this) }
 
     override suspend fun draw() {
-        parent.screen.removeChildren()
-        background.addTo(parent.screen)
-        parent.screen.addChild(parent.playerCombatant)
-        parent.playerCombatant.init()
-
-        parent.screen.addChild(parent.enemyCombatant)
-        parent.enemyCombatant.init()
-
-        parent.screen.addChild(battleControls)
-        battleControls.init()
+        parent.drawBase(battleControls)
     }
 
     override suspend fun onAccept() {

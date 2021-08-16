@@ -1,13 +1,13 @@
 package ui.battleScene.menus
 
-import com.soywiz.korge.view.*
 import ui.Button
-import ui.battleScene.*
+import ui.battleScene.BattleControls
+import ui.battleScene.BattleOption
+import ui.battleScene.BattleScene
 import kotlin.math.abs
 
 class MoveMenu(
     private val parent: BattleScene,
-    private val background: Image,
     private val backMenu: ActionMenu
 ) : BattleMenu {
     private var battleControls = getControls()
@@ -15,20 +15,13 @@ class MoveMenu(
     private lateinit var movePoints: Button
 
     override suspend fun draw() {
-        parent.screen.removeChildren()
-
-        background.addTo(parent.screen)
-        parent.screen.addChild(parent.playerCombatant)
-        parent.screen.addChild(parent.enemyCombatant)
+        parent.drawBase(battleControls)
 
         val dist = parent.config.battle.distance
         distance = Button(parent.screen, 50, 0, "Distance: $dist")
         val terrain = parent.config.battle.terrain
         val totalMP = parent.playerCombatant.bot.core.getMovement(terrain) / 10
         movePoints = Button(parent.screen, 50, 20, "MP: ${parent.playerCombatant.bot.mp}/$totalMP")
-
-        parent.screen.addChild(battleControls)
-        battleControls.init()
     }
 
     override suspend fun onAccept() {
