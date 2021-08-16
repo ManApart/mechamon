@@ -12,25 +12,23 @@ import ui.battleScene.Combatant
 class ActionMenu(
     private val parent: BattleScene,
     private val background: Image,
-    private val playerCombatant: Combatant,
-    private val enemyCombatant: Combatant,
     private val backMenu: TopLevel
 ) : BattleMenu {
     private var battleControls = getControls()
     private lateinit var apInfo: Button
 
-    private val moveMenu by lazy { MoveMenu(parent, background, playerCombatant, enemyCombatant, this) }
+    private val moveMenu by lazy { MoveMenu(parent, background, this) }
 
     override suspend fun draw() {
         parent.screen.removeChildren()
 
         background.addTo(parent.screen)
-        parent.screen.addChild(playerCombatant)
-        parent.screen.addChild(enemyCombatant)
-        playerCombatant.redraw()
-        enemyCombatant.redraw()
+        parent.screen.addChild(parent.playerCombatant)
+        parent.screen.addChild(parent.enemyCombatant)
+        parent.playerCombatant.redraw()
+        parent.enemyCombatant.redraw()
 
-        val head = playerCombatant.bot.head
+        val head = parent.playerCombatant.bot.head
         apInfo = Button(parent.screen, 0, 0, "AP: ${head.ap}/${head.totalAP}")
 
         parent.screen.addChild(battleControls)
@@ -46,7 +44,7 @@ class ActionMenu(
     }
 
     private fun getControls(): BattleControls {
-        val bot = playerCombatant.bot
+        val bot = parent.playerCombatant.bot
         val up = BattleOption(bot.head.action.name) { pickTarget(bot.head.action) }
         val right = BattleOption(bot.armRight.action.name) { pickTarget(bot.armRight.action) }
         val left = BattleOption(bot.armLeft.action.name) { pickTarget(bot.armLeft.action) }
@@ -55,8 +53,8 @@ class ActionMenu(
     }
 
     private fun pickTarget(action: Action) {
-        val menu = TargetMenu(parent, background, playerCombatant, enemyCombatant, this, action)
-            parent.draw(menu)
+        val menu = TargetMenu(parent, background, this, action)
+        parent.draw(menu)
     }
 
 }

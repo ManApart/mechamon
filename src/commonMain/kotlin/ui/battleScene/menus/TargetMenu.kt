@@ -9,8 +9,6 @@ import ui.battleScene.*
 class TargetMenu(
     private val parent: BattleScene,
     private val background: Image,
-    private val playerCombatant: Combatant,
-    private val enemyCombatant: Combatant,
     private val backMenu: ActionMenu,
     private val action: Action
 ) : BattleMenu {
@@ -21,14 +19,14 @@ class TargetMenu(
         parent.screen.removeChildren()
 
         background.addTo(parent.screen)
-        parent.screen.addChild(playerCombatant)
-        parent.screen.addChild(enemyCombatant)
+        parent.screen.addChild(parent.playerCombatant)
+        parent.screen.addChild(parent.enemyCombatant)
 
-        val head = playerCombatant.bot.head
+        val head = parent.playerCombatant.bot.head
         apInfo = Button(parent.screen, 0, 0, "AP: ${head.ap}/${head.totalAP}")
         val terrain = parent.config.battle.terrain
-        val totalMP = playerCombatant.bot.core.getMovement(terrain) / 10
-        Button(parent.screen, background.width.toInt() - 40, 0, "MP: ${playerCombatant.bot.mp}/$totalMP")
+        val totalMP = parent.playerCombatant.bot.core.getMovement(terrain) / 10
+        Button(parent.screen, background.width.toInt() - 40, 0, "MP: ${parent.playerCombatant.bot.mp}/$totalMP")
 
         parent.screen.addChild(battleControls)
         battleControls.init()
@@ -43,7 +41,7 @@ class TargetMenu(
     }
 
     private fun getControls(): BattleControls {
-        val bot = enemyCombatant.bot
+        val bot = parent.enemyCombatant.bot
         val up = BattleOption(bot.head.name) { doMove(action, bot.head) }
         val right = BattleOption(bot.armRight.name) { doMove(action, bot.armRight) }
         val left = BattleOption(bot.armLeft.name) { doMove(action, bot.armLeft) }
@@ -53,9 +51,9 @@ class TargetMenu(
 
     private fun doMove(action: Action, target: Part) {
         val battle = parent.config.battle
-        val result = playerCombatant.bot.takeAction(action, target, battle)
+        val result = parent.playerCombatant.bot.takeAction(action, target, battle)
 
-        val head = playerCombatant.bot.head
+        val head = parent.playerCombatant.bot.head
         apInfo.updateText("AP: ${head.ap}/${head.totalAP}")
         println(result)
 

@@ -21,7 +21,8 @@ import kotlin.properties.Delegates
 class BattleScene(val config: BattleConfig) : Scene() {
     var screen: Container by Delegates.notNull()
     var activeMenu: BattleMenu by Delegates.notNull()
-
+    lateinit var playerCombatant: Combatant
+    lateinit var enemyCombatant: Combatant
 
     override suspend fun Container.sceneInit() {
         config.battle.tick()
@@ -31,8 +32,8 @@ class BattleScene(val config: BattleConfig) : Scene() {
         val battle = config.battle
         val bot = battle.botA
 
-        val playerCombatant = Combatant(bot, Direction.RIGHT, background.scaledWidth)
-        val enemyCombatant = Combatant(bot, Direction.LEFT, background.scaledWidth)
+        playerCombatant = Combatant(bot, Direction.RIGHT, background.scaledWidth)
+        enemyCombatant = Combatant(bot, Direction.LEFT, background.scaledWidth)
 
 
         fixedSizeContainer(WINDOW_WIDTH, WINDOW_HEIGHT, clip = false) {
@@ -50,7 +51,7 @@ class BattleScene(val config: BattleConfig) : Scene() {
             }
         }
 
-        draw(TopLevel(this@BattleScene, background, playerCombatant, enemyCombatant))
+        draw(TopLevel(this@BattleScene, background))
 
     }
 

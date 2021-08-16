@@ -9,22 +9,20 @@ import ui.battleScene.Combatant
 
 class TopLevel(
     private val parent: BattleScene,
-    private val background: Image,
-    private val playerCombatant: Combatant,
-    private val enemyCombatant: Combatant,
+    private val background: Image
 ) : BattleMenu {
     private var battleControls = getControls()
-    private val inspectMenu by lazy { InspectWho(parent, background, playerCombatant, enemyCombatant, this) }
-    private val actionMenu by lazy { ActionMenu(parent, background, playerCombatant, enemyCombatant, this) }
+    private val inspectMenu by lazy { InspectWho(parent, background, this) }
+    private val actionMenu by lazy { ActionMenu(parent, background, this) }
 
     override suspend fun draw() {
         parent.screen.removeChildren()
         background.addTo(parent.screen)
-        parent.screen.addChild(playerCombatant)
-        playerCombatant.init()
+        parent.screen.addChild(parent.playerCombatant)
+        parent.playerCombatant.init()
 
-        parent.screen.addChild(enemyCombatant)
-        enemyCombatant.init()
+        parent.screen.addChild(parent.enemyCombatant)
+        parent.enemyCombatant.init()
 
         parent.screen.addChild(battleControls)
         battleControls.init()
