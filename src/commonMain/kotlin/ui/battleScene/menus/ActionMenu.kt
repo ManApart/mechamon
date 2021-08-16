@@ -21,7 +21,7 @@ class ActionMenu(
         parent.drawBase(battleControls)
 
         val head = parent.playerCombatant.bot.head
-        apInfo = Button(parent.screen, 0, 0, "AP: ${head.ap}/${head.totalAP}")
+        apInfo = Button(parent.battleArea, 0, 0, "AP: ${head.ap}/${head.totalAP}")
     }
 
     override suspend fun onAccept() {

@@ -9,7 +9,6 @@ import com.soywiz.korge.scene.AlphaTransition
 import com.soywiz.korge.scene.Scene
 import com.soywiz.korge.view.*
 import com.soywiz.korio.async.launchImmediately
-import ui.Button
 import ui.Resources
 import ui.battleScene.menus.BattleMenu
 import ui.battleScene.menus.TopLevel
@@ -17,11 +16,12 @@ import ui.play
 import ui.tiledScene.Direction
 import ui.tiledScene.PlayerCharacter
 import ui.tiledScene.TiledScene
-import kotlin.properties.Delegates
 
 class BattleScene(val config: BattleConfig) : Scene() {
-    var screen: Container by Delegates.notNull()
-    var activeMenu: BattleMenu by Delegates.notNull()
+    lateinit var controlsArea: Container
+    lateinit var battleArea: Container
+    lateinit var infoArea: Container
+    private lateinit var activeMenu: BattleMenu
     lateinit var playerCombatant: Combatant
     lateinit var enemyCombatant: Combatant
     private lateinit var background: Image
@@ -34,17 +34,16 @@ class BattleScene(val config: BattleConfig) : Scene() {
         val battle = config.battle
         val bot = battle.botA
 
-        playerCombatant = Combatant(bot, Direction.RIGHT, background.scaledWidth)
-        enemyCombatant = Combatant(bot, Direction.LEFT, background.scaledWidth)
-        playerCombatant.init()
-        enemyCombatant.init()
-
-
         fixedSizeContainer(WINDOW_WIDTH, WINDOW_HEIGHT, clip = false) {
-            screen = fixedSizeContainer(WINDOW_WIDTH, WINDOW_HEIGHT, false) {
+            battleArea = fixedSizeContainer(160, 160, true) {
                 scale = 4.0
             }
         }
+
+        playerCombatant = Combatant(bot, Direction.RIGHT, battleArea.unscaledWidth)
+        enemyCombatant = Combatant(bot, Direction.LEFT, battleArea.unscaledWidth)
+        playerCombatant.init()
+        enemyCombatant.init()
 
         keys {
             up(Key.SPACE) {
@@ -60,15 +59,15 @@ class BattleScene(val config: BattleConfig) : Scene() {
     }
 
     fun drawBase(battleControls: BattleControls) {
-        screen.removeChildren()
+        battleArea.removeChildren()
 
-        background.addTo(screen)
-        screen.addChild(playerCombatant)
-        screen.addChild(enemyCombatant)
+        background.addTo(battleArea)
+        battleArea.addChild(playerCombatant)
+        battleArea.addChild(enemyCombatant)
         playerCombatant.redraw()
         enemyCombatant.redraw()
 
-        screen.addChild(battleControls)
+        battleArea.addChild(battleControls)
         battleControls.init()
     }
 

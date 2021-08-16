@@ -15,21 +15,21 @@ class Inspect(
     private lateinit var description: Button
 
     override suspend fun draw() {
-        parent.screen.removeChildren()
+        parent.battleArea.removeChildren()
 
-        background.addTo(parent.screen)
-        parent.screen.addChild(combatant)
+        background.addTo(parent.battleArea)
+        parent.battleArea.addChild(combatant)
         combatant.init()
 
         val head = combatant.bot.head
-        Button(parent.screen, 0,0, "AP: ${head.ap}/${head.totalAP}")
+        Button(parent.battleArea, 0,0, "AP: ${head.ap}/${head.totalAP}")
         val terrain = parent.config.battle.terrain
         val totalMP = combatant.bot.core.getMovement(terrain) / 10
-        Button(parent.screen, background.width.toInt()- 40,0, "MP: ${combatant.bot.mp}/$totalMP")
+        Button(parent.battleArea, background.width.toInt()- 40,0, "MP: ${combatant.bot.mp}/$totalMP")
 
-        description =  Button(parent.screen, 20, 30, head.description, 120, 40)
+        description =  Button(parent.battleArea, 20, 30, head.description, 120, 40)
 
-        parent.screen.addChild(battleControls)
+        parent.battleArea.addChild(battleControls)
         battleControls.init()
     }
 

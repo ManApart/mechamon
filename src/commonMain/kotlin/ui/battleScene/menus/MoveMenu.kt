@@ -18,10 +18,10 @@ class MoveMenu(
         parent.drawBase(battleControls)
 
         val dist = parent.config.battle.distance
-        distance = Button(parent.screen, 50, 0, "Distance: $dist")
+        distance = Button(parent.battleArea, 50, 0, "Distance: $dist")
         val terrain = parent.config.battle.terrain
         val totalMP = parent.playerCombatant.bot.core.getMovement(terrain) / 10
-        movePoints = Button(parent.screen, 50, 20, "MP: ${parent.playerCombatant.bot.mp}/$totalMP")
+        movePoints = Button(parent.battleArea, 50, 20, "MP: ${parent.playerCombatant.bot.mp}/$totalMP")
     }
 
     override suspend fun onAccept() {

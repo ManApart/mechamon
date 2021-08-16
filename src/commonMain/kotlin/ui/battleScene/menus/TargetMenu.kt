@@ -19,10 +19,10 @@ class TargetMenu(
         parent.drawBase(battleControls)
 
         val head = parent.playerCombatant.bot.head
-        apInfo = Button(parent.screen, 0, 0, "AP: ${head.ap}/${head.totalAP}")
+        apInfo = Button(parent.battleArea, 0, 0, "AP: ${head.ap}/${head.totalAP}")
         val terrain = parent.config.battle.terrain
         val totalMP = parent.playerCombatant.bot.core.getMovement(terrain) / 10
-        Button(parent.screen, background.width.toInt() - 40, 0, "MP: ${parent.playerCombatant.bot.mp}/$totalMP")
+        Button(parent.battleArea, background.width.toInt() - 40, 0, "MP: ${parent.playerCombatant.bot.mp}/$totalMP")
     }
 
     override suspend fun onAccept() {
