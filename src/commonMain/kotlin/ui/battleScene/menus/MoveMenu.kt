@@ -1,9 +1,11 @@
 package ui.battleScene.menus
 
 import ui.Button
+import ui.Info
 import ui.battleScene.BattleControls
 import ui.battleScene.BattleOption
 import ui.battleScene.BattleScene
+import ui.buttonWidth
 import kotlin.math.abs
 
 class MoveMenu(
@@ -11,17 +13,21 @@ class MoveMenu(
     private val backMenu: ActionMenu
 ) : BattleMenu {
     private var battleControls = getControls()
-    private lateinit var distance: Button
-    private lateinit var movePoints: Button
+    private lateinit var distance: Info
+    private lateinit var movePoints: Info
 
     override suspend fun draw() {
         parent.drawBase(battleControls)
 
+        //TODO - use current bot
+        val bot = parent.playerCombatant.bot
         val dist = parent.config.battle.distance
-        distance = Button(parent.battleArea, 50, 0, "Distance: $dist")
         val terrain = parent.config.battle.terrain
-        val totalMP = parent.playerCombatant.bot.core.getMovement(terrain) / 10
-        movePoints = Button(parent.battleArea, 50, 20, "MP: ${parent.playerCombatant.bot.mp}/$totalMP")
+        val totalMP = bot.core.getMovement(terrain) / 10
+        with(parent.infoArea) {
+            distance = Info(this, 0, 0, "Distance: $dist")
+            movePoints = Info(this, (unscaledWidth - buttonWidth * 1.2).toInt(), 0, "MP: ${bot.mp}/$totalMP")
+        }
     }
 
     override suspend fun onAccept() {
@@ -51,7 +57,7 @@ class MoveMenu(
         movePoints.updateText("MP: ${parent.playerCombatant.bot.mp}/$totalMP")
 
         if (dist in 1..10) {
-            when{
+            when {
                 amount > 0 && abs(parent.playerCombatant.position - parent.enemyCombatant.position) > 1 -> {
                     parent.playerCombatant.position += amount
                     parent.playerCombatant.redraw()

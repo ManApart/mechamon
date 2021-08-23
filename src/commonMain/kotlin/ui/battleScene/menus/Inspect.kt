@@ -19,18 +19,18 @@ class Inspect(
     override suspend fun draw() {
         parent.drawBase(battleControls)
 
-        with(parent.infoArea) {
             val head = combatant.bot.head
-            Button(this, 0, 0, "AP: ${head.ap}/${head.totalAP}")
-
             val terrain = this@Inspect.parent.config.battle.terrain
             val totalMP = combatant.bot.core.getMovement(terrain) / 10
-            Button(this, (unscaledWidth - buttonWidth * 1.2).toInt(), 0, "MP: ${combatant.bot.mp}/$totalMP")
+
+        with(parent.infoArea) {
+            Info(this, 0, 0, "AP: ${head.ap}/${head.totalAP}")
+            Info(this, (unscaledWidth - buttonWidth * 1.2).toInt(), 0, "MP: ${combatant.bot.mp}/$totalMP")
 
             description = Info(
                 this,
                 0,
-                buttonHeight.toInt(),
+                (buttonHeight * 1.2).toInt(),
                 head.description,
                 this.unscaledWidth.toInt(),
                 buttonHeight.toInt() * 5
