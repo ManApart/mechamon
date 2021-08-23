@@ -9,7 +9,7 @@ import ui.buttonHeight
 import ui.buttonWidth
 import ui.tiledScene.Direction
 
-class BattleControls(
+data class BattleControls(
     private val up: BattleOption,
     private val down: BattleOption,
     private val left: BattleOption,
@@ -54,7 +54,7 @@ class BattleControls(
         createButton(buttonWidth * 2.1, buttonHeight * 5.5, right, highlighted == Direction.RIGHT)
         createButton(buttonWidth * .9, buttonHeight * 5.5, left, highlighted == Direction.LEFT)
         createButton(buttonWidth * 1.5, buttonHeight * 6.5, down, highlighted == Direction.DOWN)
-        centerOn(parent!!)
+        xy(-90, 300)
     }
 
     private fun createButton(x: Double, y: Double, option: BattleOption, highlighted: Boolean) {

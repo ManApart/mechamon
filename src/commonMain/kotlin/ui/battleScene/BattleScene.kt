@@ -10,6 +10,7 @@ import com.soywiz.korge.scene.Scene
 import com.soywiz.korge.view.*
 import com.soywiz.korim.color.Colors
 import com.soywiz.korio.async.launchImmediately
+import ui.Button
 import ui.Resources
 import ui.battleScene.menus.BattleMenu
 import ui.battleScene.menus.TopLevel
@@ -42,7 +43,8 @@ class BattleScene(val config: BattleConfig) : Scene() {
                 scale = 6.0
                 alignLeftToRightOf(controlsArea)
             }
-            infoArea = fixedSizeContainer(160, WINDOW_HEIGHT, true) {
+            val remainingWidth = WINDOW_WIDTH - (300 + 160*6)
+            infoArea = fixedSizeContainer(remainingWidth, WINDOW_HEIGHT, true) {
                 alignLeftToRightOf(battleArea)
             }
         }
@@ -67,9 +69,11 @@ class BattleScene(val config: BattleConfig) : Scene() {
 
     fun drawBase(battleControls: BattleControls) {
         with(controlsArea) {
-            controlsArea.removeChildren()
+            removeChildren()
             addChild(battleControls)
             battleControls.init()
+//            val backButton = Button(this, 80, 400, "Back") {}
+//            addChild(backButton)
         }
 
         with(battleArea) {

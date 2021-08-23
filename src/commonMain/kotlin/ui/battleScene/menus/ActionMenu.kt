@@ -2,6 +2,7 @@ package ui.battleScene.menus
 
 import com.soywiz.korge.view.Image
 import core.actions.Action
+import data.NOTHING
 import ui.Button
 import ui.battleScene.BattleControls
 import ui.battleScene.BattleOption
@@ -41,6 +42,7 @@ class ActionMenu(
     }
 
     private fun pickTarget(action: Action) {
+        if (action == NOTHING) return
         val menu = TargetMenu(parent, parent.background, this, action)
         parent.draw(menu)
     }

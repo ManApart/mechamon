@@ -3,6 +3,8 @@ package ui.battleScene.menus
 import com.soywiz.korge.view.*
 import ui.Button
 import ui.battleScene.*
+import ui.buttonHeight
+import ui.buttonWidth
 import ui.tiledScene.Direction
 
 class Inspect(
@@ -14,22 +16,26 @@ class Inspect(
     private lateinit var description: Button
 
     override suspend fun draw() {
-        parent.battleArea.removeChildren()
+        parent.drawBase(battleControls)
 
-        parent.background.addTo(parent.battleArea)
-        parent.battleArea.addChild(combatant)
-        combatant.init()
+        with(parent.infoArea) {
+            val head = combatant.bot.head
+            Button(this, 0, 0, "AP: ${head.ap}/${head.totalAP}")
 
-        val head = combatant.bot.head
-        Button(parent.battleArea, 0,0, "AP: ${head.ap}/${head.totalAP}")
-        val terrain = parent.config.battle.terrain
-        val totalMP = combatant.bot.core.getMovement(terrain) / 10
-        Button(parent.battleArea, parent.background.width.toInt()- 40,0, "MP: ${combatant.bot.mp}/$totalMP")
+            val terrain = this@Inspect.parent.config.battle.terrain
+            val totalMP = combatant.bot.core.getMovement(terrain) / 10
+            Button(this, (unscaledWidth - buttonWidth * 1.2).toInt(), 0, "MP: ${combatant.bot.mp}/$totalMP")
 
-        description =  Button(parent.battleArea, 20, 30, head.description, 120, 40)
+            description = Button(
+                this,
+                0,
+                buttonHeight.toInt(),
+                head.description,
+                this.unscaledWidth.toInt(),
+                buttonHeight.toInt() * 5
+            )
+        }
 
-        parent.battleArea.addChild(battleControls)
-        battleControls.init()
     }
 
     override suspend fun onAccept() {
@@ -46,7 +52,7 @@ class Inspect(
         val right = BattleOption("${bot.armRight.name}\nHP: ${bot.armRight.health}/${bot.armRight.totalHealth}")
         val left = BattleOption("${bot.armLeft.name}\nHP: ${bot.armLeft.health}/${bot.armLeft.totalHealth}")
         val down = BattleOption("${bot.core.name}\nHP: ${bot.core.health}/${bot.core.totalHealth}")
-        return BattleControls(up, down, left, right) {direction -> updateDescription(direction)}
+        return BattleControls(up, down, left, right) { direction -> updateDescription(direction) }
     }
 
     private fun updateDescription(direction: Direction) {

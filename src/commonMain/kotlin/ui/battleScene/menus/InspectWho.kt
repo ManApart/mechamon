@@ -1,11 +1,8 @@
 package ui.battleScene.menus
 
-import com.soywiz.korge.view.Image
-import com.soywiz.korge.view.addTo
 import ui.battleScene.BattleControls
 import ui.battleScene.BattleOption
 import ui.battleScene.BattleScene
-import ui.battleScene.Combatant
 
 class InspectWho(
     private val parent: BattleScene,

@@ -15,7 +15,7 @@ class Button(
     width: Double = buttonWidth,
     height: Double = buttonHeight,
     val onButtonClick: () -> Unit = {}
-) {
+): Container() {
     constructor(
         parent: Container,
         x: Int,
