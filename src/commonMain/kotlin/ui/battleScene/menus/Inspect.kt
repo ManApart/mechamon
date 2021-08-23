@@ -2,6 +2,7 @@ package ui.battleScene.menus
 
 import com.soywiz.korge.view.*
 import ui.Button
+import ui.Info
 import ui.battleScene.*
 import ui.buttonHeight
 import ui.buttonWidth
@@ -13,7 +14,7 @@ class Inspect(
     private val backMenu: InspectWho
 ) : BattleMenu {
     private var battleControls = getControls()
-    private lateinit var description: Button
+    private lateinit var description: Info
 
     override suspend fun draw() {
         parent.drawBase(battleControls)
@@ -26,7 +27,7 @@ class Inspect(
             val totalMP = combatant.bot.core.getMovement(terrain) / 10
             Button(this, (unscaledWidth - buttonWidth * 1.2).toInt(), 0, "MP: ${combatant.bot.mp}/$totalMP")
 
-            description = Button(
+            description = Info(
                 this,
                 0,
                 buttonHeight.toInt(),
